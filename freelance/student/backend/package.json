@@ -1,4 +1,15 @@
 {
+  "name": "simplify-backend",
+  "version": "1.0.0",
+  "description": "Backend for Simplify Freelance Marketplace",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
