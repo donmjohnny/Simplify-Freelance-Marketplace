@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Company Dashboard - Project Manager</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --border-color: rgba(255, 255, 255, 0.2);
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                min-height: 100vh;
+            }
+
+            .navbar {
+                padding: 1rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid var(--border-color);
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .dashboard-container {
+                display: flex;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .sidebar {
+                width: 250px;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                border-radius: 20px;
+                padding: 20px;
+            }
+
+            .menu-item {
+                padding: 12px;
+                border-radius: 10px;
+                cursor: pointer;
+                margin-bottom: 10px;
+            }
+
+            .menu-item.active {
+                background: rgba(255, 255, 255, 0.2);
+                font-weight: 600;
+            }
+
+            .main-content {
+                flex: 1;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                border-radius: 20px;
+                padding: 30px;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+
+            .project-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 20px;
+            }
+
+            .project-card {
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 15px;
+                padding: 20px;
+            }
+
+            .btn-view {
+                background: white;
+                color: var(--primary-blue);
+                border: none;
+                padding: 8px 20px;
+                border-radius: 20px;
+                font-weight: 600;
+                cursor: pointer;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .student-card {
+                background: rgba(0, 0, 0, 0.25);
+                padding: 15px;
+                border-radius: 12px;
+                margin-bottom: 15px;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+           #toast-container {
+    position: fixed;
+    top: 20px;
+    right: 50px;
+    z-index: 99999; /* 🔥 THIS IS THE KEY */
+}
+
+.toast {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    backdrop-filter: blur(10px);
+}
+
+              .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+            .navbar{
+             display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 2rem;
+                background: var(--glass-bg);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 1rem auto;
+                backdrop-filter: blur(12px);
+                position: relative;
+                z-index: 10;
+            }
+              .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1.05rem;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover {
+                color: var(--text-light);
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1rem;
+                transition: color 0.3s ease;
+            }
+
+            .nav-icons a:hover {
+                color: var(--text-light);
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <nav class="navbar">
+            <div class="logo-container"><a href="projectselect.html">
+                    <h3>Simplify</h3>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="projectuploadingorg.html">Project Upload</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="report.html">Report</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+            </div>
+        </nav>
+        <div class="dashboard-container">
+
+            <div class="sidebar">
+                <div class="menu-item active" onclick="showSection('projectsSection')">My Projects</div>
+                <div class="menu-item" onclick="showSection('activeSection')">Active Work</div>
+            </div>
+
+            <div class="main-content">
+
+                <!-- PROJECTS -->
+                <div id="projectsSection">
+                    <h2>Active Projects</h2>
+                    <div class="project-grid" id="projectGrid"></div>
+                </div>
+
+                <!-- APPLICANTS -->
+                <div id="applicantsSection" class="hidden">
+                    <h2 id="appProjectTitle"></h2>
+                    <button onclick="showSection('projectsSection')" style=" padding: 8px 14px;border-radius: 8px;border: 1px solid rgba(255,255,255,0.3);
+                    background: rgba(255,255,255,0.12);color: #ffffff;font-size: 0.85rem;cursor: pointer;transition: 0.2s ease;">← Back</button>
+                    <div id="applicantList"></div>
+                </div>
+
+                <!-- ACTIVE WORK -->
+                <div id="activeSection" class="hidden">
+                    <h2>Active Student Progress</h2>
+                    <div id="activeList"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="toast-container"></div>
+
+        <script>
+            function showToast(msg) {
+                const t = document.createElement('div');
+                t.className = 'toast';
+                t.innerText = msg;
+                document.getElementById('toast-container').appendChild(t);
+                setTimeout(() => t.remove(), 3000);
+            }
+
+            function showSection(id) {
+                ['projectsSection', 'applicantsSection', 'activeSection']
+                    .forEach(s => document.getElementById(s).classList.add('hidden'));
+                document.getElementById(id).classList.remove('hidden');
+
+                if (id === 'activeSection') loadActiveWork();
+            }
+
+            async function loadProjects() {
+                const grid = document.getElementById('projectGrid');
+                grid.innerHTML = 'Loading...';
+
+                const LOGIN_ID = localStorage.getItem("login_id");
+
+                const res = await fetch('/org/projects', {
+                    headers: {
+                        "x-login-id": LOGIN_ID
+                    }
+                });
+
+                const data = await res.json();
+
+                grid.innerHTML = '';
+                data.projects.forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = 'project-card';
+                    div.innerHTML = `
+                <h3>${p.project_name}</h3>
+                <p>Deadline: ${p.deadline || 'N/A'}</p>
+                <p>Value: ₹${p.total_value}</p>
+                <button class="btn-view" onclick="openApplicants(${p.id})">Review Applicants</button>
+            `;
+                    grid.appendChild(div);
+                });
+            }
+
+          async function openApplicants(projectId) {
+                showSection('applicantsSection');
+
+                const res = await fetch(`/org/projects/${projectId}/applicants`, {
+                    headers: {
+                        "x-login-id": localStorage.getItem("login_id")
+                    }
+                });
+
+                const data = await res.json();
+
+                const title = document.getElementById('appProjectTitle');
+                const list = document.getElementById('applicantList');
+
+                list.innerHTML = '';
+
+                if (!data.success || data.applicants.length === 0) {
+                    title.innerText = "No applicants yet";
+                    list.innerHTML = "<p>No students applied for this project.</p>";
+                    return;
+                }
+
+                title.innerText = "Applicants";
+
+                // 🔥 THIS IS WHY STEP 3 EXISTS
+                data.applicants.forEach(a => {
+                    const div = document.createElement('div');
+                    div.className = 'student-card';
+                    div.innerHTML = `
+      <strong>${a.name}</strong><br>
+      <small>${a.email}</small><br><br>
+      <button onclick="acceptStudent(${projectId}, ${a.student_id})"style="
+padding:8px 14px;border-radius:8px;border:1px solid #10b981;background:rgba(16,185,129,0.25);color:#ecfdf5;font-size:0.85rem;font-weight:500;cursor:pointer;transition:0.2s;
+">Accept</button>
+    `;
+                    list.appendChild(div);
+                });
+            }
+            async function acceptStudent(projectId, studentId) {
+                    await fetch(`/org/projects/${projectId}/accept`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-login-id": localStorage.getItem("login_id")
+                        },
+                        body: JSON.stringify({ student_id: studentId })
+                    });
+
+                    showToast("Student accepted");
+                    openApplicants(projectId);
+                }
+
+
+
+            async function assignStudent(projectId, studentId) {
+                const res = await fetch(`/org/projects/${projectId}/assign`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ student_id: studentId })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Student assigned');
+                    showSection('projectsSection');
+                    loadProjects();
+                }
+            }
+
+            // ✅ CORRECT ACTIVE WORK (USES /org/active-work)
+           async function loadActiveWork() {
+                const container = document.getElementById("activeList");
+                container.innerHTML = "Loading...";
+
+                const res = await fetch("/org/active-work/details", {
+                    headers: { "x-login-id": localStorage.getItem("login_id") }
+                });
+                const data = await res.json();
+
+                container.innerHTML = "";
+
+                if (!data.success) {
+                    container.innerHTML = "<p>No active work</p>";
+                    return;
+                }
+
+                data.work.forEach(w => {
+                    const div = document.createElement("div");
+                    div.className = "student-card";
+
+                    div.innerHTML = `
+      <strong>Project:</strong> ${w.project_name}<br>
+      <strong>Student:</strong> ${w.student_name}<br>
+      <strong>Milestone:</strong> ${w.milestone_title}<br>
+      <strong>Amount:</strong> ₹${w.price}<br><br>
+
+      ${w.submission_url
+                            ? `<a href="${w.submission_url}" target="_blank"style="
+display:inline-block;
+padding:7px 12px;
+border-radius:8px;
+border:1px solid rgba(255,255,255,0.35);
+background:rgba(255,255,255,0.12);
+color:white;
+font-size:0.8rem;
+text-decoration:none;
+cursor:pointer;
+transition:0.2s;
+">View Submission</a><br><br>
+             <button onclick="acceptMilestone(${w.milestone_id})"style="
+padding:8px 14px;
+border-radius:8px;
+border:1px solid #10b981;
+background:rgba(16,185,129,0.25);
+color:#ecfdf5;
+font-size:0.85rem;
+font-weight:500;
+cursor:pointer;
+transition:0.2s;
+">Accept</button>
+             <button onclick="declineMilestone(${w.milestone_id})"style="
+padding:8px 14px;
+border-radius:8px;
+border:1px solid #ef4444;
+background:rgba(239,68,68,0.25);
+color:#fee2e2;
+font-size:0.85rem;
+font-weight:500;
+cursor:pointer;
+transition:0.2s;
+">Decline</button>`
+                            : `<em>Not submitted yet</em>`
+                        }
+    `;
+                    container.appendChild(div);
+                });
+            }
+
+            
+       async function acceptMilestone(milestoneId) {
+            await fetch(`/org/milestones/${milestoneId}/accept`, {
+                method: "POST"
+            });
+
+            showToast("Milestone accepted");
+            window.location.href = "/payment.html";
+        }
+
+        async function declineMilestone(milestoneId) {
+            await fetch(`/org/milestones/${milestoneId}/decline`, {
+                method: "POST"
+            });
+
+            showToast("Milestone declined");
+            loadActiveWork();
+        }
+
+
+            loadProjects();
+        </script>
+
+    </body>
+
+</html>

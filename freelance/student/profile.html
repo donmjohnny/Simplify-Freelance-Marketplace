@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>Profile</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --glass-border: rgba(255, 255, 255, 0.2);
+                --white: #fff;
+            }
+
+            body {
+                margin: 0;
+                font-family: Poppins, sans-serif;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                min-height: 100vh;
+            }
+
+            .container {
+                width: 95%;
+                max-width: 1100px;
+                margin: 4rem auto;
+                margin-top: 100px;
+            }
+
+            .profile-card {
+                background: var(--glass-bg);
+                border: 1px solid var(--glass-border);
+                border-radius: 20px;
+                padding: 2rem;
+                backdrop-filter: blur(12px);
+                margin-bottom: 2rem;
+            }
+
+            .profile-header h2 {
+                margin: 0;
+            }
+
+            .profile-header span {
+                opacity: 0.8;
+                font-size: 0.9rem;
+            }
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 1.5rem;
+                margin-top: 1.5rem;
+            }
+
+            .info-item h4 {
+                margin: 0;
+                font-size: 0.8rem;
+                opacity: 0.7;
+                text-transform: uppercase;
+            }
+
+            .info-item p {
+                margin: 5px 0 0;
+                font-weight: 500;
+            }
+
+            .projects {
+                background: var(--glass-bg);
+                border: 1px solid var(--glass-border);
+                border-radius: 20px;
+                padding: 2rem;
+                backdrop-filter: blur(12px);
+            }
+
+            .project-card {
+                padding: 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .project-card:last-child {
+                border-bottom: none;
+            }
+
+            .project-card h4 {
+                margin: 0;
+            }
+
+            .project-card p {
+                margin: 5px 0;
+                font-size: 0.9rem;
+                opacity: 0.9;
+            }
+
+                .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.8rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 90%;
+                box-sizing: border-box;
+                position: fixed;
+                top: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 100;
+                transition: all 0.3s ease;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+            .container{
+                margin-top: 130px;
+            }
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1rem;
+                position: relative;
+                padding-bottom: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0%;
+                height: 2px;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: var(--white);
+                transition: 0.3s;
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons {
+                display: flex;
+                align-items: center;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1.5rem;
+            }
+               .logo {
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 10px
+            }
+                .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <nav class="navbar">
+            <div class="logo-container">
+            <div class="logo"><a href="studenthome.html" style="color:white;text-decoration:none;"><h3> Simplify</h3></a></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="coursefront.html">Courses</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="trialproject.html">Trial Projects</a></li>
+                <li><a href="projectselect.html">Project Display</a></li>
+                <li><a href="report.html">Report</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+            </div>
+            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+        </nav>
+
+        <div class="container">
+
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h2 id="name">Loading...</h2>
+                    <span id="role">Loading role...</span>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <h4>Email</h4>
+                        <p id="email">—</p>
+                    </div>
+
+                    <div class="info-item" id="college-box">
+                        <h4>College</h4>
+                        <p id="college">—</p>
+                    </div>
+
+                    <div class="info-item" id="skills-box">
+                        <h4>Skills</h4>
+                        <p id="skills">—</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="projects">
+                <h3 id="projects-title">Projects</h3>
+                <div id="projects-list"></div>
+            </div>
+
+        </div>
+
+        <script>
+            /* ================= AUTH ================= */
+            const LOGIN_ID = localStorage.getItem("login_id");
+            if (!LOGIN_ID) {
+                alert("Login expired");
+                location.href = "/login.html";
+            }
+
+            /* ================= LOAD PROFILE ================= */
+         async function loadProfile() {
+                const res = await fetch("/student/profile", {
+                    headers: { "x-login-id": LOGIN_ID }
+                });
+
+                const me = await res.json();
+
+                if (!me || !me.name) {
+                    alert("Failed to load student profile");
+                    return;
+                }
+
+                // ✅ THESE WERE MISSING OR OVERWRITTEN BEFORE
+                document.getElementById("name").innerText = me.name;
+                document.getElementById("email").innerText = me.email;
+                document.getElementById("role").innerText = "Student";
+                document.getElementById("college").innerText = me.college_name || "N/A";
+                document.getElementById("skills").innerText = me.skills || "N/A";
+
+                loadStudentProjects();
+            }
+
+            /* ================= LOAD ACTIVE PROJECTS ================= */
+       async function loadStudentProjects() {
+            const res = await fetch("/student/active-projects", {
+                headers: { "x-login-id": LOGIN_ID }
+            });
+
+            const data = await res.json();
+
+            if (!data.success) {
+                document.getElementById("projects-list").innerHTML =
+                    "<p>No active projects</p>";
+                return;
+            }
+
+            renderProjects(data.projects);
+        }
+
+
+            /* ================= RENDER PROJECTS ================= */
+            function renderProjects(projects) {
+                    const box = document.getElementById("projects-list");
+
+                    // 🔴 HARD RESET
+                    box.innerHTML = "";
+
+                    console.log("Rendering projects:", projects);
+
+                    if (!projects || projects.length === 0) {
+                        box.innerHTML = "<p>No active projects</p>";
+                        return;
+                    }
+
+                    projects.forEach(p => {
+                        const div = document.createElement("div");
+                        div.className = "project-card";
+
+                        div.innerHTML = `
+      <h4>${p.project_name}</h4>
+      <p><strong>Organization:</strong> ${p.org_name}</p>
+
+      <button onclick="loadMilestones(${p.assignment_id})">
+        View Milestones
+      </button>
+
+      <div id="ms-${p.assignment_id}" style="display:none;margin-top:10px;"></div>
+    `;
+
+                        box.appendChild(div);
+                    });
+                }
+
+            /* ================= LOAD MILESTONES ================= */
+          async function loadMilestones(assignmentId) {
+                const box = document.getElementById("ms-" + assignmentId);
+                box.style.display = "block";
+                box.innerHTML = "Loading...";
+
+                const res = await fetch(`/student/projects/${assignmentId}/milestones`, {
+                    headers: { "x-login-id": LOGIN_ID }
+                });
+
+                const data = await res.json();
+
+                if (!data.success) {
+                    box.innerHTML = "<p>Failed to load milestones</p>";
+                    return;
+                }
+
+                box.innerHTML = data.milestones.map(m => `
+    <div style="margin-bottom:12px;">
+      <strong>${m.title}</strong> – ₹${m.price}<br>
+      Status: <b>${m.status || "Not submitted"}</b><br>
+
+      ${m.status === "accepted"
+                        ? "<span style='color:#4cd137'>✔ Completed</span>"
+                        : `
+            <button onclick="uploadWork(${m.milestone_id}, ${assignmentId})">
+              Upload Work
+            </button>
+          `
+                    }
+    </div>
+  `).join("");
+            }
+
+            /* ================= UPLOAD WORK ================= */
+      async function uploadWork(milestoneId, assignmentId) {
+            const url = prompt("Paste your GitHub / Drive / Live URL");
+            if (!url) return;
+
+            console.log("UPLOAD PAYLOAD", { milestoneId, assignmentId, url });
+
+            const res = await fetch(`/student/milestones/${milestoneId}/submit`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-login-id": LOGIN_ID
+                },
+                body: JSON.stringify({
+                    assignment_id: assignmentId,
+                    submission_url: url
+                })
+            });
+
+            const data = await res.json();
+            console.log("UPLOAD RESPONSE", data);
+
+            alert("Work submitted");
+            loadMilestones(assignmentId); // refresh milestone view
+        }
+
+
+            loadProfile();
+        </script>
+
+
+    </body>
+
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Secure Payment - UPI</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <style>
+            /* --- THEME VARIABLES --- */
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --border-color: rgba(255, 255, 255, 0.2);
+                --accent-green: #4cd137;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+            }
+
+            #particles-js {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            /* --- PAYMENT CARD CONTAINER --- */
+            .payment-container {
+                position: relative;
+                z-index: 10;
+                display: flex;
+                width: 850px;
+                max-width: 95%;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                border: 1px solid var(--border-color);
+                border-radius: 25px;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+                overflow: hidden;
+            }
+
+            /* --- LEFT SIDE: ORDER SUMMARY --- */
+            .summary-panel {
+                flex: 1;
+                background: rgba(0, 0, 0, 0.2);
+                /* Slightly darker for contrast */
+                padding: 40px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                position: relative;
+            }
+
+            .summary-header h2 {
+                margin: 0;
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+            .summary-header span {
+                font-size: 0.9rem;
+                opacity: 0.7;
+                letter-spacing: 1px;
+            }
+
+            .bill-details {
+                margin-top: 30px;
+            }
+
+            .bill-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15px;
+                font-size: 0.95rem;
+                opacity: 0.9;
+            }
+
+            .bill-total {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--accent-green);
+            }
+
+            .trust-badges {
+                display: flex;
+                gap: 15px;
+                opacity: 0.6;
+                font-size: 1.5rem;
+                margin-top: auto;
+            }
+
+            /* --- RIGHT SIDE: UPI FORM --- */
+            .payment-panel {
+                flex: 1.3;
+                padding: 40px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .upi-header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .upi-logo {
+                width: 80px;
+                height: auto;
+                margin-bottom: 10px;
+                background: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+            }
+
+            .input-group {
+                margin-bottom: 25px;
+                position: relative;
+            }
+
+            .input-group label {
+                display: block;
+                margin-bottom: 10px;
+                font-weight: 500;
+                font-size: 0.95rem;
+            }
+              .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+
+            .upi-input-wrapper {
+                position: relative;
+            }
+
+            .upi-input-wrapper i {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--white);
+                opacity: 0.5;
+            }
+
+            input[type="text"] {
+                width: 100%;
+                padding: 15px 15px 15px 45px;
+                /* Space for icon */
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                color: white;
+                font-size: 1.1rem;
+                font-family: 'Poppins', sans-serif;
+                outline: none;
+                transition: 0.3s;
+                box-sizing: border-box;
+            }
+
+            input:focus {
+                border-color: var(--primary-blue);
+                background: rgba(255, 255, 255, 0.15);
+                box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+            }
+
+            .pay-btn {
+                background: linear-gradient(90deg, #4cd137, #009432);
+                color: white;
+                border: none;
+                padding: 15px;
+                border-radius: 50px;
+                font-size: 1.1rem;
+                font-weight: 700;
+                cursor: pointer;
+                transition: 0.3s;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                margin-top: 10px;
+                box-shadow: 0 5px 20px rgba(76, 209, 55, 0.3);
+            }
+
+            .pay-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(76, 209, 55, 0.5);
+            }
+
+            .pay-btn:disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
+            }
+
+            /* --- SUCCESS OVERLAY --- */
+            .success-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(37, 90, 180, 0.95);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 20;
+                opacity: 0;
+                pointer-events: none;
+                transition: 0.4s;
+            }
+
+            .success-overlay.active {
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .checkmark-circle {
+                width: 80px;
+                height: 80px;
+                background: #4cd137;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 40px;
+                color: white;
+                margin-bottom: 20px;
+                box-shadow: 0 0 30px #4cd137;
+                animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            }
+
+            .success-text h2 {
+                margin: 0;
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+
+            .success-text p {
+                opacity: 0.8;
+                margin-bottom: 30px;
+            }
+
+            .btn-home {
+                background: transparent;
+                border: 2px solid white;
+                color: white;
+                padding: 10px 30px;
+                border-radius: 50px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: 0.3s;
+                text-decoration: none;
+            }
+
+            .btn-home:hover {
+                background: white;
+                color: var(--primary-blue);
+            }
+
+            @keyframes popIn {
+                0% {
+                    transform: scale(0);
+                }
+
+                80% {
+                    transform: scale(1.1);
+                }
+
+                100% {
+                    transform: scale(1);
+                }
+            }
+
+            @media (max-width: 800px) {
+                .payment-container {
+                    flex-direction: column;
+                    width: 90%;
+                }
+
+                .summary-panel {
+                    padding: 20px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div id="particles-js"></div>
+        
+        <div class="payment-container">
+
+            <div class="summary-panel">
+                <div>
+                    <div class="summary-header">
+                        <span>PAYING FOR</span>
+                        <h2>Milestone Approval</h2>
+                    </div>
+                    <div class="bill-details">
+                        <div class="bill-row">
+                            <span>Project</span>
+                            <span>E-Commerce Web App</span>
+                        </div>
+                        <div class="bill-row">
+                            <span>Milestone</span>
+                            <span>UI Design Phase</span>
+                        </div>
+                        <div class="bill-row">
+                            <span>Recipient</span>
+                            <span>Arjun K.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="bill-total">
+                        <span>Total Pay</span>
+                        <span>₹5,000.00</span>
+                    </div>
+                    <div class="trust-badges">
+                        <i class="fa-brands fa-cc-amazon-pay"></i>
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-panel">
+                <div class="upi-header">
+                    <div style="font-size: 2rem; font-weight: bold; margin-bottom: 10px;">
+                        <i class="fa-solid fa-mobile-screen-button"></i> UPI
+                    </div>
+                    <p style="opacity: 0.8;">Enter your UPI ID to complete the payment</p>
+                </div>
+
+                <div class="input-group">
+                    <label>UPI Number / VPA</label>
+                    <div class="upi-input-wrapper">
+                        <i class="fa-solid fa-at"></i>
+                        <input type="text" id="upiId" placeholder="e.g. 9876543210@upi">
+                    </div>
+                    <small style="opacity: 0.6; display: block; margin-top: 8px; font-size: 0.8rem;">
+                        We will send a collect request to this UPI ID.
+                    </small>
+                </div>
+
+                <button class="pay-btn" id="payBtn" onclick="processPayment()">
+                    Verify & Pay ₹5,000
+                </button>
+            </div>
+
+            <div class="success-overlay" id="successOverlay">
+                <div class="checkmark-circle">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div class="success-text" style="text-align: center;">
+                    <h2>Payment Successful!</h2>
+                    <p>Transaction ID: #TXN88293010</p>
+                    <p>The milestone has been marked as <strong>Paid</strong>.</p>
+                </div>
+                <a href="#" onclick="window.history.back()" class="btn-home">Return to Dashboard</a>
+            </div>
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            /* --- Particles --- */
+            particlesJS("particles-js", {
+                particles: { number: { value: 50 }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 3 }, line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.1 }, move: { enable: true, speed: 1.5 } },
+                interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" } } },
+                retina_detect: true
+            });
+
+            /* --- Payment Logic --- */
+            function processPayment() {
+                const upiInput = document.getElementById('upiId').value;
+                const btn = document.getElementById('payBtn');
+
+                if (upiInput.length < 5) {
+                    alert("Please enter a valid UPI ID");
+                    return;
+                }
+
+                // 1. Change Button State
+                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+                btn.disabled = true;
+
+                // 2. Simulate Delay (Network Request)
+                setTimeout(() => {
+                    // 3. Show Success Overlay
+                    document.getElementById('successOverlay').classList.add('active');
+                }, 2500);
+            }
+
+            // Optional: Parse URL params to set dynamic price (if needed in real implementation)
+            const urlParams = new URLSearchParams(window.location.search);
+            const amount = urlParams.get('amount');
+            if (amount) {
+                document.querySelector('.bill-total span:last-child').innerText = '₹' + parseFloat(amount).toLocaleString('en-IN');
+                document.getElementById('payBtn').innerText = 'Verify & Pay ₹' + parseFloat(amount).toLocaleString('en-IN');
+            }
+        </script>
+    </body>
+
+</html>

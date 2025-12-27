@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Terms and Conditions - Simpify</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-color: #333;
+                --sub-text-color: #e2e8f0;
+                --glass-bg: rgba(255, 255, 255, 0.2);
+                --card-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                --card-hover-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+                --border-radius: 20px;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                background: var(--primary-blue);
+                color: var(--white);
+                line-height: 1.6;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 1rem;
+                box-sizing: border-box;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            /* Navigation Bar Styling */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 2rem;
+                background: var(--glass-bg);
+                border-top: 1px solid rgba(255, 255, 255, 0.5);
+                border-left: 1px solid rgba(255, 255, 255, 0.5);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-radius: 50px;
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                max-width: 1200px;
+                width: 100%;
+                margin: 0 auto 2rem;
+            }
+
+            .logo-container {
+                display: flex;
+                align-items: center;
+            }
+
+            .logo-container img {
+                height: 40px;
+                margin-right: 10px;
+                filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
+            }
+
+            .nav-links {
+                display: flex;
+                align-items: center;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links li {
+                margin-left: 1.5rem;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1rem;
+                transition: color 0.3s ease, transform 0.3s ease;
+                position: relative;
+            }
+
+            .nav-links a:hover {
+                color: var(--sub-text-color);
+                transform: translateY(-2px);
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: -5px;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons {
+                display: flex;
+                align-items: center;
+            }
+
+            .nav-icons a {
+                font-size: 1.25rem;
+                color: var(--white);
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+            .nav-icons a:hover {
+                color: var(--sub-text-color);
+            }
+
+            .nav-icons .search-icon {
+                margin-right: 1.5rem;
+            }
+
+            .nav-icons .account-icon {
+                margin-left: 1rem;
+            }
+
+
+            /* Terms and Conditions Section */
+            .terms-container {
+                background: var(--glass-bg);
+                border-top: 1px solid rgba(255, 255, 255, 0.5);
+                border-left: 1px solid rgba(255, 255, 255, 0.5);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-radius: var(--border-radius);
+                padding: 3rem;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+                max-width: 900px;
+                width: 100%;
+            }
+
+            .terms-container h1 {
+                font-size: clamp(2rem, 5vw, 3.5rem);
+                margin-bottom: 1.5rem;
+                font-weight: 700;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .terms-container h2 {
+                font-size: 1.75rem;
+                font-weight: 600;
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                color: var(--white);
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            }
+
+            .terms-container p {
+                font-size: 1rem;
+                opacity: 0.8;
+                margin-bottom: 1.5rem;
+            }
+
+            .terms-container a {
+                color: var(--white);
+                text-decoration: underline;
+            }
+
+            .accept-button-container {
+                text-align: center;
+                margin-top: 2rem;
+            }
+
+            .accept-button {
+                padding: 1rem 3rem;
+                border-radius: 50px;
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.15);
+                color: var(--white);
+                font-size: 1.1rem;
+                font-weight: 600;
+                outline: none;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                text-transform: uppercase;
+            }
+
+            .accept-button:hover {
+                box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+                transform: translateY(-2px);
+                background: var(--white);
+                color: var(--primary-blue);
+            }
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="https://i.ibb.co/L9H8XqS/simplify-transparent.png" alt="Simplify Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">Notes</a></li>
+                <li><a href="#">Trial Projects</a></li>
+                <li><a href="#">Freelance</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="#" class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="#" class="account-icon"><i class="fa-solid fa-user-circle"></i></a>
+            </div>
+        </nav>
+        <div class="terms-container">
+            <h1>Terms and Conditions</h1>
+
+            <h2>Introduction and Scope</h2>
+            <p>By accessing and using Simpify, a freelance marketplace mainly for Computer Science & Engineering
+                students, you agree to these Terms and Conditions. This platform is intended only for students and
+                organizations, and to ensure trust and authenticity, all users must register and log in using their
+                official college or organization ID.</p>
+
+            <h2>Course References</h2>
+            <p>We provide references and links to courses offered by various multinational companies (MNCs) purely for
+                educational purposes; these courses are not owned, created, or controlled by Simpify, and we do not
+                represent or partner with any of these companies. All rights, materials, and intellectual property
+                remain with their respective owners, and by clicking on a course link, you will be redirected to the
+                official website of the provider.</p>
+
+            <h2>Project and Payment Policy</h2>
+            <p>To maintain fairness and avoid scams, we request organizations to divide projects into milestones or
+                modules. Students must complete each milestone within the given due date and submit it for review, and
+                if the organization accepts the work, payment will be released for that specific milestone. This
+                continues until the project is finished, with payments being made step by step for each milestone as
+                progress is accepted.</p>
+
+            <h2>Prohibited Activities and Termination</h2>
+            <p>Any attempt to misuse the platform, including fraud, academic dishonesty, or off-platform dealings, is
+                strictly prohibited. If an account receives multiple valid reports, it may be suspended or permanently
+                terminated by the admin without prior notice.</p>
+
+            <h2>User Consent</h2>
+            <p>By entering and using Simpify, you acknowledge that you have read, understood, and accepted these Terms
+                and Conditions, and you agree not to act against the stated policies. Access is granted only to users
+                who accept these terms.</p>
+
+            <div class="accept-button-container">
+                <button class="accept-button" onclick="alert('You have accepted the terms and conditions.');">I
+                    Accept</button>
+            </div>
+        </div>
+    </body>
+
+</html>

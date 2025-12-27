@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Dashboard | Simplify</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-light: #f0f4ff;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --modal-bg: rgba(20, 30, 60, 0.95);
+                /* Darker backdrop for modal */
+                --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                --border-radius: 20px;
+                --success-green: #10B981;
+            }
+
+            html {
+                font-size: 16px;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 1rem;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                overflow-x: hidden;
+                min-height: 100vh;
+            }
+
+            /* Particles background */
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            /* Navbar */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 2rem;
+                background: var(--glass-bg);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 1rem auto;
+                backdrop-filter: blur(12px);
+                position: relative;
+                z-index: 10;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1.05rem;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover {
+                color: var(--text-light);
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1rem;
+                transition: color 0.3s ease;
+            }
+
+            .nav-icons a:hover {
+                color: var(--text-light);
+            }
+
+            /* Glass Box Containers */
+            .glass-box {
+                width: 100%;
+                max-width: 1100px;
+                padding: 2rem;
+                background: var(--glass-bg);
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                backdrop-filter: blur(12px);
+                margin-bottom: 2rem;
+                position: relative;
+                z-index: 5;
+                animation: fadeInUp 1s ease;
+                box-sizing: border-box;
+            }
+
+            .glass-box h2 {
+                text-align: center;
+                margin-top: 0;
+                margin-bottom: 1.5rem;
+                font-size: clamp(1.8rem, 4vw, 2.5rem);
+                color: #fff;
+            }
+
+            .dashboard-container {
+                text-align: center;
+                animation: fadeInUp 1s ease;
+            }
+
+            .dashboard-container h2 {
+                font-size: 30px;
+                margin-bottom: 1rem;
+                color: var(--white);
+            }
+
+            .dashboard-container p {
+                font-size: clamp(1rem, 1.5vw, 1.25rem);
+                line-height: 1.8;
+                color: #f0f4ff;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            p {
+                font-size: clamp(1rem, 1.2vw, 1.15rem);
+                line-height: 1.6;
+            }
+
+            /* Bento Grid */
+            .bento-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                grid-auto-rows: 180px;
+                gap: 1.5rem;
+                animation: fadeIn 1.2s ease;
+            }
+
+            .bento-item {
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: 600;
+                font-size: clamp(1rem, 1.2vw, 1.4rem);
+                padding: 2rem;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+                animation: popUp 0.8s ease;
+            }
+
+            .bento-item i {
+                font-size: 1.5rem;
+                margin-right: 0.5rem;
+                animation: floatIcon 3s ease-in-out infinite;
+            }
+
+            .bento-item.white {
+                background: #ffffff;
+                color: var(--primary-blue);
+            }
+
+            .bento-item.blue {
+                background: var(--primary-blue);
+                color: #ffffff;
+            }
+
+            .bento-item:hover {
+                transform: translateY(-10px) scale(1.03);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            }
+
+            .count-circle {
+                position: absolute;
+                top: -15px;
+                right: -15px;
+                width: 50px;
+                height: 50px;
+                border-top: 4px solid var(--primary-blue);
+                border-left: 4px solid var(--primary-blue);
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                font-size: 1rem;
+                animation: moveCircle 3s ease-in-out infinite alternate;
+                background: rgba(0, 0, 0, 0.1);
+                color: var(--white);
+            }
+
+            @keyframes moveCircle {
+                0% {
+                    transform: translate(0, 0) rotate(0deg);
+                }
+
+                50% {
+                    transform: translate(-5px, 5px) rotate(20deg);
+                }
+
+                100% {
+                    transform: translate(0, 0) rotate(0deg);
+                }
+            }
+
+            .wide {
+                grid-column: span 2;
+            }
+
+            .tall {
+                grid-row: span 2;
+            }
+
+            .big {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+
+            /* Animations */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes popUp {
+                0% {
+                    opacity: 0;
+                    transform: scale(0.8);
+                }
+
+                100% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            @keyframes floatIcon {
+
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-6px);
+                }
+            }
+
+            /* Button */
+            .btn {
+                font-family: sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                margin: auto;
+                font-size: 18px;
+                font-weight: 600;
+                color: #ffff;
+                background: rgba(255, 255, 255, 0.15);
+                border: 2px solid white;
+                border-radius: 9999px;
+                padding: 10px 16px;
+                position: relative;
+                overflow: hidden;
+                cursor: pointer;
+                z-index: 10;
+                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            }
+
+            .btn::before {
+                content: "";
+                position: absolute;
+                left: -100%;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: #3B82F6;
+                border-radius: 9999px;
+                transition: all 0.7s ease;
+                z-index: -1;
+            }
+
+            .btn:hover::before {
+                left: 0;
+                transform: scale(1.5);
+            }
+
+            .btn:hover {
+                color: #f9fafb;
+            }
+
+            .btn svg {
+                width: 32px;
+                height: 32px;
+                padding: 6px;
+                border-radius: 50%;
+                border: 1px solid #374151;
+                background: #f9fafb;
+                fill: #1f2937;
+                transform: rotate(45deg);
+                transition: all 0.3s ease;
+            }
+
+            .btn:hover svg {
+                transform: rotate(90deg);
+                border: none;
+                background: #f9fafb;
+                fill: #1f2937;
+            }
+
+            /* ================= TERMS MODAL STYLES ================= */
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.85);
+                backdrop-filter: blur(8px);
+                z-index: 999;
+                display: flex;
+                /* Flex enabled by default for popup */
+                justify-content: center;
+                align-items: center;
+                animation: fadeIn 0.5s ease;
+            }
+
+            .modal-content {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                padding: 2.5rem;
+                border-radius: 24px;
+                width: 90%;
+                max-width: 700px;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+                color: var(--white);
+                position: relative;
+                animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .modal-content::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .modal-content::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 4px;
+            }
+
+            .modal-content::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 4px;
+            }
+
+            .modal-content::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.5);
+            }
+
+            .modal-content h2 {
+                margin-top: 0;
+                color: var(--primary-blue);
+                font-size: 2rem;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .modal-content h3 {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                padding-bottom: 10px;
+                margin-top: 25px;
+                font-size: 1.2rem;
+            }
+
+            .modal-content p {
+                font-size: 0.95rem;
+                opacity: 0.9;
+                line-height: 1.6;
+            }
+
+            .accept-btn {
+                background: var(--primary-blue);
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 50px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                margin: 20px auto 0;
+                display: block;
+                transition: all 0.3s ease;
+                box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            }
+
+            .accept-btn:hover {
+                background: var(--white);
+                color: var(--primary-blue);
+                transform: translateY(-2px);
+            }
+
+            @keyframes slideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(50px) scale(0.95);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            /* ================= TOAST NOTIFICATION STYLES ================= */
+            .toast {
+                visibility: hidden;
+                min-width: 300px;
+                background-color: var(--white);
+                color: #333;
+                text-align: center;
+                border-radius: 12px;
+                padding: 16px;
+                position: fixed;
+                z-index: 1000;
+                right: 30px;
+                top: 30px;
+                font-size: 1rem;
+                font-weight: 500;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                border-left: 5px solid var(--success-green);
+                transform: translateX(120%);
+                transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            }
+
+            .toast.show {
+                visibility: visible;
+                transform: translateX(0);
+            }
+
+            .toast i {
+                color: var(--success-green);
+                font-size: 1.2rem;
+            }
+
+            @media (max-width: 992px) {
+                .nav-links {
+                    display: none;
+                }
+
+                .bento-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                    grid-auto-rows: 150px;
+                }
+
+                .wide,
+                .tall,
+                .big {
+                    grid-column: span 1;
+                    grid-row: span 1;
+                }
+            }
+                .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+
+        <div id="toast" class="toast">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Welcome aboard! Terms accepted.</span>
+        </div>
+
+        <div id="terms-modal" class="modal-overlay">
+            <div class="modal-content glass-box">
+                <h2>Terms and Conditions</h2>
+                <p style="text-align: center;">Welcome to Simplify. Please review our terms to continue.</p>
+
+                <h3>1. Introduction and Scope</h3>
+                <p>By accessing Simplify, a freelance marketplace for Computer Science & Engineering students, you agree
+                    to these Terms. Users must register using their official college or organization ID.</p>
+
+                <h3>2. Course References</h3>
+                <p>We provide links to courses for educational purposes only. These courses are not owned by Simplify.
+                    By clicking a link, you will be redirected to the provider's website.</p>
+
+                <h3>3. Project and Payment Policy</h3>
+                <p>Organizations must divide projects into milestones. Students submit work for each milestone. Payment
+                    is released upon acceptance of work. This ensures fairness for both parties.</p>
+
+                <h3>4. Prohibited Activities</h3>
+                <p>Fraud, academic dishonesty, or off-platform dealings are strictly prohibited. Accounts with multiple
+                    valid reports will be suspended immediately.</p>
+
+                <h3>5. User Consent</h3>
+                <p>By clicking "I Accept", you acknowledge that you have read, understood, and accepted these Terms and
+                    Conditions.</p>
+
+                <button class="accept-btn" onclick="acceptTerms()">I Accept</button>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <div class="logo-container">
+                <a href="studenthome.html">
+                    <h3>Simplify</h3>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="coursefront.html">Courses</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="trialproject.html">Trial Projects</a></li>
+                <li><a href="projectselect.html">Freelance Projects</a></li>
+                <li><a href="report.html">Report</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+            </div>
+        </nav>
+
+        <div class="glass-box dashboard-container">
+            <h2>Welcome To Simplify!</h2>
+            <p>This platform is a freelance marketplace created for students, where you can earn money by completing
+                tasks
+                and projects posted by organizations. A simple learn and earn space — built by an engineer, for
+                engineers.</p>
+        </div>
+
+        <div class="glass-box">
+            <h2>Explore Features</h2>
+            <div class="bento-grid">
+                <div class="bento-item white wide">
+                    <i class="fa-solid fa-graduation-cap"></i> Courses
+                    <div class="count-circle">12</div>
+                </div>
+                <div class="bento-item blue tall">
+                    <i class="fa-solid fa-book-open"></i> Notes
+                    <div class="count-circle">25</div>
+                </div>
+                <div class="bento-item white">
+                    <i class="fa-solid fa-briefcase"></i> Freelance Projects
+                    <div class="count-circle">8</div>
+                </div>
+                <div class="bento-item blue">
+                    <i class="fa-solid fa-coins"></i> Earnings
+                </div>
+                <div class="bento-item white">
+                    <i class="fa-solid fa-users"></i> Clients
+                    <div class="count-circle">34</div>
+                </div>
+                <div class="bento-item white">
+                    <i class="fa-solid fa-star"></i> Reviews
+                    <div class="count-circle">22</div>
+                </div>
+                <div class="bento-item blue">
+                    <i class="fa-solid fa-lightbulb"></i> Verified Students
+                    <div class="count-circle">15</div>
+                </div>
+                <div class="bento-item blue wide">
+                    <i class="fa-solid fa-chart-line"></i> For Engineers by an Engineer
+                </div>
+                <div class="bento-item white">
+                    <i class="fa-solid fa-award"></i>Trial Projects
+                    <div class="count-circle">50</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-box">
+        <h2 style="text-align:center; margin-bottom:16px; font-size:30px;">
+            Worried About Your Skills?
+        </h2>
+        
+        <p style="text-align:center; line-height:1.8; max-width:720px; margin:0 auto; font-size:17px;">
+            Many students face challenges in building the right skills due to lack of guidance or resources.
+            <strong>Simplify</strong> helps you overcome this gap by providing a skill-improving space for learners
+            and engineers alike.
+            Learn through curated courses and notes from trusted platforms, and gain real-world experience with
+            official trial projects provided by <strong>µLearn SNGCE community</strong>.
+        </p>
+        
+        <div style="text-align:center; margin-top:26px; font-size:20px; font-weight:700; color:#ffffff; letter-spacing:1.5px;">
+         <a href="coursefront.html" style="color: #ffffff;text-decoration: none;">Courses</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+         <a href="notes.html" style="color: white;text-decoration: none;">Notes</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+         <a href="trialproject.html" style="color: white;text-decoration: none;">Trial Projects</a>
+        </div>
+        </div>
+        <div class="glass-box">
+        <h2 style="text-align:center; margin-bottom:16px; font-size:30px;">
+            Confident About Your Skills?
+        </h2>
+        
+        <p style="text-align:center; line-height:1.8; max-width:720px; margin:0 auto; font-size:17px;">
+            If you believe you are ready to apply your skills, this is your opportunity.
+            <strong>Simplify</strong> is a freelance marketplace where you can work on real-world company projects
+            and earn by doing what you know best.
+            Test your talent, showcase your abilities, and gain practical experience while building your career.
+        </p>
+        
+        <div style="text-align:center; margin-top:26px; font-size:20px; font-weight:700; color:#ffffff; letter-spacing:1.5px;">
+            <a href="projectselect.html" style="color: white;text-decoration: none;">Freelance Marketplace &nbsp;→</a>
+        </div>
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            // Particle Background Logic
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": { "value": 80 }, "color": { "value": "#ffffff" },
+                    "shape": { "type": "circle" }, "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+                    "move": { "enable": true, "speed": 2 }
+                },
+                "interactivity": {
+                    "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } }
+                },
+                "retina_detect": true
+            });
+
+            // Popup and Toast Logic
+            function acceptTerms() {
+                // 1. Hide the Modal
+                const modal = document.getElementById('terms-modal');
+                modal.style.display = 'none';
+
+                // 2. Show the Toast Notification
+                const toast = document.getElementById('toast');
+                toast.className = "toast show";
+
+                // 3. Hide Toast after 3 seconds
+                setTimeout(function () {
+                    toast.className = toast.className.replace("show", "");
+                }, 3000);
+            }
+
+            // Optional: If you want to remember that they accepted so it doesn't show next time:
+            
+            window.onload = function() {
+                if(localStorage.getItem('termsAccepted') === 'true') {
+                    document.getElementById('terms-modal').style.display = 'none';
+                }
+            }
+            // Then add localStorage.setItem('termsAccepted', 'true'); inside the acceptTerms function.
+            
+        </script>
+    </body>
+
+</html>

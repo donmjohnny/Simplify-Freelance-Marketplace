@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Web Development Courses</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-light: #f0f4ff;
+                --sub-text-color: #e2e8f0;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                --card-hover-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+                --border-radius: 20px;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 8rem 1rem 2rem 1rem;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                line-height: 1.6;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                box-sizing: border-box;
+            }
+
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            /* --- Navbar --- */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.8rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 90%;
+                box-sizing: border-box;
+                position: fixed;
+                top: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 100;
+                transition: all 0.3s ease;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1rem;
+                position: relative;
+                padding-bottom: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0%;
+                height: 2px;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: var(--white);
+                transition: 0.3s;
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons {
+                display: flex;
+                align-items: center;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1.5rem;
+            }
+
+            .menu-toggle {
+                display: none;
+                background: none;
+                border: none;
+                color: var(--white);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            /* --- Main Content --- */
+            .glass-box {
+                width: 100%;
+                max-width: 1200px;
+                box-sizing: border-box;
+                padding: 2.5rem;
+                background: var(--glass-bg);
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                backdrop-filter: blur(12px);
+                margin: 0 auto;
+                position: relative;
+                z-index: 5;
+            }
+
+            .section-header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .section-title {
+                font-size: 30px;
+                margin-bottom: 0.5rem;
+            }
+
+            .section-description {
+                font-size: 1.1rem;
+                opacity: 0.9;
+                max-width: 700px;
+                margin: 0 auto;
+            }
+
+            .controls-container {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                width: 100%;
+                margin-bottom: 2rem;
+                max-width: 900px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            #searchInput {
+                flex-grow: 1;
+                padding: 1rem 1.5rem;
+                border-radius: 50px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--white);
+                font-size: 1rem;
+                outline: none;
+            }
+
+            #searchInput::placeholder {
+                color: var(--sub-text-color);
+            }
+
+            .sort-button {
+                padding: 1rem 1.5rem;
+                border-radius: 50px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.15);
+                color: var(--white);
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+            /* Courses Grid */
+            .courses-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 2rem;
+            }
+
+            .course-card {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: var(--border-radius);
+                padding: 2rem;
+                transition: transform 0.3s ease;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .course-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .course-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-top: 0;
+                flex-grow: 1;
+            }
+
+            .course-description {
+                font-size: 0.95rem;
+                color: var(--sub-text-color);
+            }
+
+            .course-details {
+                font-size: 0.85rem;
+                display: block;
+                margin-top: auto;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .course-button {
+                display: inline-block;
+                align-self: flex-start;
+                margin-top: 1.5rem;
+                background: rgba(255, 255, 255, 0.15);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50px;
+                color: var(--white);
+                padding: 0.6rem 1.5rem;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+            .course-button:hover {
+                background: var(--white);
+                color: var(--primary-blue);
+            }
+
+            .no-results {
+                display: none;
+                text-align: center;
+                margin-top: 2rem;
+            }
+
+            .popup {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                backdrop-filter: blur(5px);
+            }
+
+            .popup.active {
+                display: flex;
+            }
+
+            .popup-content {
+                background: var(--glass-bg);
+                padding: 2.5rem;
+                border-radius: var(--border-radius);
+                text-align: center;
+                max-width: 500px;
+                width: 90%;
+            }
+
+            .popup-content h3 {
+                margin-top: 0;
+            }
+
+            .sort-options-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .sort-options-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.75rem;
+                margin: 1.5rem 0;
+            }
+
+            .sort-options-buttons button {
+                padding: 10px 15px;
+                border: none;
+                border-radius: 50px;
+                background-color: rgba(255, 255, 255, 0.15);
+                color: white;
+                cursor: pointer;
+            }
+
+            .popup-content .close-button {
+                background-color: var(--white);
+                color: var(--primary-blue);
+                padding: 0.75rem 2rem;
+                border-radius: 50px;
+                font-weight: 600;
+                cursor: pointer;
+                border: none;
+            }
+
+            @media (max-width: 900px) {
+                .navbar {
+                    flex-wrap: wrap;
+                    width: 95%;
+                }
+
+                .nav-links {
+                    position: absolute;
+                    top: calc(100% + 10px);
+                    left: 0;
+                    width: 100%;
+                    background: rgba(0, 0, 0, 0.4);
+                    backdrop-filter: blur(15px);
+                    flex-direction: column;
+                    display: none;
+                    padding: 1.5rem 0;
+                    border-radius: 20px;
+                }
+
+                .nav-links.active {
+                    display: flex;
+                }
+
+                .nav-links li {
+                    margin: 0.75rem 0;
+                }
+
+                .nav-icons {
+                    display: none;
+                }
+
+                .menu-toggle {
+                    display: block;
+                }
+            }
+                .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+        <nav class="navbar">
+            <div class="logo-container">
+                <a href="studenthome.html">
+                    <h3>Simplify</h3>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="coursefront.html">Courses</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="trialproject.html">Trial Projects</a></li>
+                <li><a href="projectselect.html">Project Display</a></li>
+                <li><a href="report.html">Report</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+            </div>
+            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+        </nav>
+
+        <div class="glass-box">
+            <section class="section-header">
+                <h1 class="section-title">Web Development Courses</h1>
+                <p class="section-description">
+                    Dive into creating stunning, user-friendly websites with courses on HTML, CSS, JavaScript, and
+                    modern frameworks.
+                </p>
+            </section>
+
+            <div class="controls-container">
+                <input type="text" id="searchInput" placeholder="Search courses...">
+                <button class="sort-button" id="openSortPopup">Sort & Filter</button>
+            </div>
+
+            <section class="courses-section">
+                <div class="courses-grid" id="coursesGrid">
+                    <!-- Dynamic cards inserted here -->
+                </div>
+                <p class="no-results" id="noResults">No courses found. Try another search or filter.</p>
+            </section>
+        </div>
+
+        <div class="popup" id="sortPopup">
+            <div class="popup-content">
+                <h3>Sort and Filter Courses</h3>
+                <div class="sort-options-group">
+                    <h4>Organization</h4>
+                    <div class="sort-options-buttons">
+                        <button onclick="sortCourses('org', '')">All</button>
+                        <button onclick="sortCourses('org', 'IBM SkillBuild')">IBM</button>
+                        <button onclick="sortCourses('org', 'freeCodeCamp')">freeCodeCamp</button>
+                        <button onclick="sortCourses('org', 'Great Learning')">Great Learning</button>
+                    </div>
+                </div>
+                <div class="sort-options-group">
+                    <h4>Level</h4>
+                    <div class="sort-options-buttons">
+                        <button onclick="sortCourses('level', '')">All</button>
+                        <button onclick="sortCourses('level', 'Beginner')">Beginner</button>
+                        <button onclick="sortCourses('level', 'Intermediate')">Intermediate</button>
+                    </div>
+                </div>
+                <button class="close-button" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            // Particles.js setup
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 60, },
+                    color: { value: "#ffffff" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.2 },
+                    move: { enable: true, speed: 2, direction: "none", out_mode: "out" }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                },
+                retina_detect: true
+            });
+
+            // Mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                const icon = menuToggle.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+
+            // ---------- Dynamic Web Dev Courses ----------
+            document.addEventListener("DOMContentLoaded", () => {
+                const searchInput = document.getElementById("searchInput");
+                const coursesGrid = document.getElementById("coursesGrid");
+                const noResults = document.getElementById("noResults");
+                const openSortPopupButton = document.getElementById("openSortPopup");
+                const sortPopup = document.getElementById("sortPopup");
+
+                let allCourses = [];
+                let currentOrgFilter = "";
+                let currentLevelFilter = "";
+
+                async function loadCourses() {
+                    try {
+                        const res = await fetch("/student/webdev-courses");
+                        if (!res.ok) throw new Error("Failed to load courses");
+                        const data = await res.json();
+
+                        if (!data.success || !Array.isArray(data.courses)) {
+                            throw new Error("Invalid response format");
+                        }
+
+                        allCourses = data.courses;
+                        applyFilters();
+                    } catch (err) {
+                        console.error(err);
+                        coursesGrid.innerHTML = `
+            <p style="text-align:center; color: var(--sub-text-color); grid-column: 1 / -1;">
+              Unable to load courses right now. Please try again later.
+            </p>
+          `;
+                    }
+                }
+
+                function renderCourses(courses) {
+                    coursesGrid.innerHTML = "";
+
+                    if (!courses || courses.length === 0) {
+                        noResults.style.display = "block";
+                        return;
+                    }
+
+                    noResults.style.display = "none";
+
+                    courses.forEach(course => {
+                        const card = document.createElement("div");
+                        card.className = "course-card";
+                        card.dataset.org = course.organization || "";
+                        card.dataset.level = course.level || "";
+
+                        const org = course.organization || "Not specified";
+                        const level = course.level || "Not specified";
+                        const duration = course.duration || "Not specified";
+                        const url = course.external_url || "#";
+
+                        card.innerHTML = `
+            <h3 class="course-title">${course.title}</h3>
+            <p class="course-description">${course.short_description}</p>
+            <strong class="course-details">
+              Organization: ${org}<br>
+              Duration: ${duration}<br>
+              Level: ${level}
+            </strong>
+            <a href="${url}" class="course-button" target="_blank" rel="noopener noreferrer">
+              Official Website
+            </a>
+          `;
+
+                        coursesGrid.appendChild(card);
+                    });
+                }
+
+                function applyFilters() {
+                    const q = searchInput.value.toLowerCase();
+
+                    const filtered = allCourses.filter(c => {
+                        const text = `${c.title} ${c.short_description} ${c.organization || ""} ${c.level || ""}`.toLowerCase();
+                        const matchesSearch = !q || text.includes(q);
+                        const matchesOrg = !currentOrgFilter || c.organization === currentOrgFilter;
+                        const matchesLevel = !currentLevelFilter || c.level === currentLevelFilter;
+                        return matchesSearch && matchesOrg && matchesLevel;
+                    });
+
+                    renderCourses(filtered);
+                }
+
+                // Handlers exposed to HTML buttons
+                window.sortCourses = (type, value) => {
+                    if (type === "org") currentOrgFilter = value;
+                    if (type === "level") currentLevelFilter = value;
+                    applyFilters();
+                    closePopup();
+                };
+
+                function openPopup() {
+                    sortPopup.classList.add("active");
+                }
+
+                function closePopup() {
+                    sortPopup.classList.remove("active");
+                }
+
+                window.closePopup = closePopup;
+
+                openSortPopupButton.addEventListener("click", openPopup);
+                searchInput.addEventListener("input", applyFilters);
+
+                // Initial load
+                loadCourses();
+            });
+        </script>
+    </body>
+
+</html>

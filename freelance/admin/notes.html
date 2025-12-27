@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin - Manage Notes & Books</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-light: #f0f4ff;
+                --sub-text-color: #e2e8f0;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                --border-radius: 20px;
+                --danger-red: #ef4444;
+                --success-green: #10b981;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                height: 100vh;
+                overflow: hidden;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+            }
+
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            /* --- Navbar --- */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 90%;
+                position: fixed;
+                top: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 100;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+            }
+
+            /* --- Admin Grid Layout --- */
+            .admin-container {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 2rem;
+                max-width: 1400px;
+                height: calc(100vh - 140px);
+                margin: 110px auto 0 auto;
+                padding: 0 2rem 2rem 2rem;
+                position: relative;
+                z-index: 5;
+                box-sizing: border-box;
+            }
+
+            .glass-panel {
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                padding: 2rem;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                height: 100%;
+                overflow-y: auto;
+                box-sizing: border-box;
+            }
+
+            /* Scrollbar */
+            .glass-panel::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .glass-panel::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+            }
+
+            .glass-panel::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 10px;
+            }
+
+            .glass-panel::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.5);
+            }
+
+            /* --- List Header --- */
+            .list-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 2rem;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(15px);
+                padding: 1rem 1.5rem;
+                border-radius: 25px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-bar {
+                padding: 0.8rem 1.5rem;
+                border-radius: 50px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.15);
+                color: var(--white);
+                outline: none;
+                width: 200px;
+                transition: width 0.3s ease;
+            }
+
+            .search-bar:focus {
+                width: 250px;
+                background: rgba(255, 255, 255, 0.25);
+            }
+
+            .books-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .book-card {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 15px;
+                padding: 1.5rem;
+                position: relative;
+                transition: transform 0.2s ease;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                min-height: 120px;
+            }
+
+            .book-card:hover {
+                transform: translateY(-5px);
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .book-header-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+            }
+
+            .book-link {
+                display: inline-block;
+                margin-top: auto;
+                background: rgba(59, 130, 246, 0.3);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 10px;
+                text-decoration: none;
+                font-size: 0.9rem;
+                transition: 0.3s;
+                text-align: center;
+            }
+
+            .book-link:hover {
+                background: var(--primary-blue);
+            }
+
+            .delete-btn {
+                background: rgba(239, 68, 68, 0.2);
+                color: #ffcccc;
+                border: 1px solid var(--danger-red);
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+
+            .delete-btn:hover {
+                background: var(--danger-red);
+                color: white;
+            }
+
+            /* --- Form Styles --- */
+            .admin-form {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .admin-form label {
+                font-size: 0.9rem;
+                margin-bottom: -5px;
+                color: var(--sub-text-color);
+            }
+
+            .admin-form input {
+                width: 100%;
+                padding: 0.8rem;
+                border-radius: 10px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--white);
+                box-sizing: border-box;
+            }
+
+            .submit-btn {
+                padding: 0.9rem;
+                border: none;
+                border-radius: 50px;
+                background: var(--white);
+                color: var(--primary-blue);
+                font-weight: 600;
+                cursor: pointer;
+                transition: 0.3s;
+                margin-top: 1rem;
+            }
+
+            .submit-btn:hover {
+                background: var(--dark-blue);
+                color: var(--white);
+            }
+
+            /* --- Toast --- */
+            #toast-container {
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .toast {
+                min-width: 250px;
+                background: rgba(255, 255, 255, 0.95);
+                color: #333;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideInLeft 0.5s ease forwards;
+                border-left: 5px solid;
+            }
+
+            .toast.success {
+                border-left-color: var(--success-green);
+            }
+
+            .toast.error {
+                border-left-color: var(--danger-red);
+            }
+
+            .toast.hiding {
+                animation: fadeOut 0.5s ease forwards;
+            }
+
+            @keyframes slideInLeft {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+            }
+
+            /* Responsive */
+            @media (max-width: 900px) {
+                body {
+                    height: auto;
+                    overflow: auto;
+                }
+
+                .admin-container {
+                    display: flex;
+                    flex-direction: column;
+                    height: auto;
+                    margin-top: 100px;
+                }
+
+                .glass-panel {
+                    min-height: 400px;
+                }
+
+                .list-header {
+                    flex-direction: column;
+                    gap: 10px;
+                    text-align: center;
+                }
+
+                .search-bar {
+                    width: 100%;
+                }
+            }
+             .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+        <div id="toast-container"></div>
+
+        <nav class="navbar">
+            <div class="logo-container">
+                <a href="adminhome.html">
+                    <h3>Simplify</h3>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="coursefront.html">Courses</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="trialproject.html">Trial Projects</a></li>
+        
+            </ul>
+            <div class="nav-links">
+            </div>
+        </nav>
+
+        <div class="admin-container">
+            <section class="glass-panel">
+                <div class="list-header">
+                    <h2 style="margin: 0;">Study Notes & Books</h2>
+                    <input type="text" id="searchInput" class="search-bar" placeholder="Filter by topic...">
+                </div>
+
+                <div class="books-grid" id="booksGrid">
+                </div>
+            </section>
+
+            <section class="glass-panel">
+                <h2 style="margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 1rem;">Add New
+                    Resource</h2>
+                <form id="addBookForm" class="admin-form">
+                    <label>Resource Title</label>
+                    <input type="text" id="bookTitle" placeholder="e.g. Advanced JavaScript" required>
+
+                    <label>Resource URL</label>
+                    <input type="url" id="bookLink" placeholder="https://goalkicker.com/..." required>
+
+                    <button type="submit" class="submit-btn">Add to Library</button>
+                </form>
+
+                <div style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.7; text-align: center;">
+                    <p>Default resources provided by <a href="https://goalkicker.com" target="_blank"
+                            style="color:white;">GoalKicker.com</a></p>
+                </div>
+            </section>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            // Particles Init
+            particlesJS("particles-js", { particles: { number: { value: 60, }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.2 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } } });
+            let hasFetched = false;
+            const API_URL = "/admin/gig-books";
+            let allBooks = [];
+            async function fetchBooks() {
+                    if (hasFetched) return;   // 🔒 STOP multiple calls
+                    hasFetched = true;
+
+                    try {
+                        const response = await fetch(API_URL);
+                        const data = await response.json();
+
+                        if (!data.success) throw new Error("Fetch failed");
+
+                        allBooks = data.books;
+                        renderBooks(allBooks);
+                    } catch (error) {
+                        console.error(error);
+                        showToast("Failed to load resources", "error");
+                        hasFetched = false; // allow retry if failed
+                    }
+                }
+
+                function renderBooks(books) {
+                        const grid = document.getElementById("booksGrid");
+                        grid.innerHTML = "";
+
+                        if (books.length === 0) {
+                            grid.innerHTML = `<p style="grid-column:1/-1; text-align:center;">No resources found.</p>`;
+                            return;
+                        }
+
+                        books.forEach(book => {
+                            const card = document.createElement("div");
+                            card.className = "book-card";
+
+                            card.innerHTML = `
+      <div class="book-header-row">
+        <h3>${book.title}</h3>
+        <button class="delete-btn" onclick="deleteBook(${book.id})">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+      <p style="opacity:0.7">${book.topic || ""}</p>
+      <a href="${book.link}" target="_blank" class="book-link">
+        Access Resource
+      </a>
+    `;
+
+                            grid.appendChild(card);
+                        });
+                    }
+
+            // --- ADD BOOK ---
+               document.getElementById("addBookForm").addEventListener("submit", async function (e) {
+                    e.preventDefault();
+
+                    const title = document.getElementById("bookTitle").value;
+                    const link = document.getElementById("bookLink").value;
+
+                    try {
+                        const response = await fetch(API_URL, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                title,
+                                link,
+                                provider: "GoalKicker",
+                                topic: "Programming"
+                            })
+                        });
+
+                        const data = await response.json();
+                        if (!data.success) throw new Error("Insert failed");
+
+                        showToast("Resource added successfully!", "success");
+                        this.reset();
+                        fetchBooks();
+
+                    } catch (error) {
+                        showToast("Failed to add resource", "error");
+                    }
+                });
+
+                async function deleteBook(id) {
+                        if (!confirm("Delete this resource?")) return;
+
+                        try {
+                            const response = await fetch(`/admin/gig-books/${id}`, {
+                                method: "DELETE"
+                            });
+
+                            const data = await response.json();
+                            if (!data.success) throw new Error("Delete failed");
+
+                            showToast("Resource deleted", "success");
+                            fetchBooks();
+
+                        } catch (error) {
+                            showToast("Delete failed", "error");
+                        }
+                    }
+
+
+            // --- SEARCH ---
+            document.getElementById('searchInput').addEventListener('keyup', (e) => {
+                    const term = e.target.value.toLowerCase();
+
+                    const filtered = allBooks.filter(book =>
+                        book.title.toLowerCase().includes(term) ||
+                        (book.topic && book.topic.toLowerCase().includes(term)) ||
+                        (book.provider && book.provider.toLowerCase().includes(term))
+                    );
+
+                    renderBooks(filtered);
+                });
+
+            // --- TOAST NOTIFICATION ---
+            function showToast(message, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                const icon = type === 'success' ? '<i class="fas fa-check-circle" style="color: green"></i>' : '<i class="fas fa-exclamation-circle" style="color: red"></i>';
+                toast.innerHTML = `${icon} <span>${message}</span>`;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.add('hiding');
+                    toast.addEventListener('animationend', () => toast.remove());
+                }, 3000);
+            }
+
+            // Init
+            window.addEventListener("DOMContentLoaded", fetchBooks);
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login & Register Form</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-color: #333;
+                --sub-text-color: #666;
+                --input-bg: #f5f5f5;
+                --success-color: #2ecc71;
+                --error-color: #e74c3c;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                padding: 1rem;
+                overflow-x: hidden;
+            }
+
+            #particles-js {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            /* --- TOAST NOTIFICATIONS --- */
+            #toast-container {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .toast {
+                min-width: 250px;
+                padding: 16px 20px;
+                border-radius: 8px;
+                background: #fff;
+                color: #333;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                animation: slideIn 0.5s ease forwards;
+                border-left: 5px solid transparent;
+            }
+
+            .toast.success {
+                border-left-color: var(--success-color);
+            }
+
+            .toast.error {
+                border-left-color: var(--error-color);
+            }
+
+            .toast.hide {
+                animation: slideOut 0.5s ease forwards;
+            }
+
+            .toast i {
+                margin-right: 10px;
+                font-size: 1.2rem;
+            }
+
+            .toast.success i {
+                color: var(--success-color);
+            }
+
+            .toast.error i {
+                color: var(--error-color);
+            }
+
+            @keyframes slideIn {
+                from {
+                    transform: translateX(120%);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+
+                to {
+                    transform: translateX(120%);
+                    opacity: 0;
+                }
+            }
+
+            /* --- MAIN CONTAINER --- */
+            .container {
+                background-color: #fff;
+                border-radius: 20px;
+                box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+                position: relative;
+                overflow: hidden;
+                width: 850px;
+                max-width: 100%;
+                min-height: 600px;
+                /* Increased height for forms */
+                z-index: 1;
+            }
+
+            /* --- FORM CONTAINERS --- */
+            .form-container {
+                position: absolute;
+                top: 0;
+                height: 100%;
+                transition: all 0.6s ease-in-out;
+                background-color: #ffffff;
+                /* Ensures textboxes aren't transparent */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 0 40px;
+            }
+
+            form {
+                background-color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                padding: 0 20px;
+                height: 100%;
+                width: 100%;
+                text-align: center;
+            }
+
+            /* SIGN IN (Default Visible on Left) */
+            .sign-in-container {
+                left: 0;
+                width: 50%;
+                z-index: 2;
+            }
+
+            /* SIGN UP (Default Hidden on Left) */
+            .sign-up-container {
+                left: 0;
+                width: 50%;
+                opacity: 0;
+                z-index: 1;
+            }
+
+            /* ANIMATION: Move Sign In to the Right (Hide) */
+            .container.right-panel-active .sign-in-container {
+                transform: translateX(100%);
+            }
+
+            /* ANIMATION: Move Sign Up to the Right (Show) */
+            .container.right-panel-active .sign-up-container {
+                transform: translateX(100%);
+                opacity: 1;
+                z-index: 5;
+                animation: show 0.6s;
+            }
+
+            @keyframes show {
+
+                0%,
+                49.99% {
+                    opacity: 0;
+                    z-index: 1;
+                }
+
+                50%,
+                100% {
+                    opacity: 1;
+                    z-index: 5;
+                }
+            }
+
+            /* --- OVERLAY (The Blue Slider) --- */
+            .overlay-container {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 50%;
+                height: 100%;
+                overflow: hidden;
+                transition: transform 0.6s ease-in-out;
+                z-index: 100;
+            }
+
+            .container.right-panel-active .overlay-container {
+                transform: translateX(-100%);
+            }
+
+            .overlay {
+                background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: 0 0;
+                color: #ffffff;
+                position: relative;
+                left: -100%;
+                height: 100%;
+                width: 200%;
+                transform: translateX(0);
+                transition: transform 0.6s ease-in-out;
+            }
+
+            .container.right-panel-active .overlay {
+                transform: translateX(50%);
+            }
+
+            .overlay-panel {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                padding: 0 40px;
+                text-align: center;
+                top: 0;
+                height: 100%;
+                width: 50%;
+                transform: translateX(0);
+                transition: transform 0.6s ease-in-out;
+            }
+
+            .overlay-left {
+                transform: translateX(-20%);
+            }
+
+            .container.right-panel-active .overlay-left {
+                transform: translateX(0);
+            }
+
+            .overlay-right {
+                right: 0;
+                transform: translateX(0);
+            }
+
+            .container.right-panel-active .overlay-right {
+                transform: translateX(20%);
+            }
+
+            /* --- TEXT & INPUT STYLING --- */
+            h1 {
+                font-weight: 700;
+                margin: 0 0 1.5rem;
+                color: var(--primary-blue);
+            }
+
+            .overlay-panel h1 {
+                color: #ffffff;
+            }
+
+            p {
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 20px;
+                letter-spacing: 0.5px;
+                margin: 20px 0 30px;
+            }
+
+            span {
+                font-size: 12px;
+            }
+
+            a {
+                color: #333;
+                font-size: 14px;
+                text-decoration: none;
+                margin: 15px 0;
+                transition: 0.3s;
+            }
+
+            a:hover {
+                color: var(--primary-blue);
+            }
+
+            /* IMPORTANT: Ensuring Inputs are Visible */
+            input {
+                background-color: #eee;
+                border: none;
+                padding: 12px 15px;
+                margin: 8px 0;
+                width: 100%;
+                border-radius: 5px;
+                /* Softer edges */
+                font-family: 'Poppins', sans-serif;
+                color: #333;
+                /* Ensure text is dark */
+                font-size: 0.9rem;
+                outline: none;
+            }
+
+            input:focus {
+                background-color: #e6e6e6;
+                box-shadow: 0 0 0 2px var(--primary-blue);
+            }
+
+            button {
+                border-radius: 20px;
+                border: 1px solid var(--primary-blue);
+                background-color: var(--primary-blue);
+                color: #ffffff;
+                font-size: 12px;
+                font-weight: bold;
+                padding: 12px 45px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                transition: transform 80ms ease-in, background 0.3s;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+
+            button:active {
+                transform: scale(0.95);
+            }
+
+            button:focus {
+                outline: none;
+            }
+
+            button.ghost {
+                background-color: transparent;
+                border-color: #ffffff;
+            }
+
+            button.ghost:hover {
+                background-color: #ffffff;
+                color: var(--primary-blue);
+            }
+
+            /* --- STUDENT TOGGLE & FORGOT PASSWORD --- */
+            .role-selection {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            .role-selection label {
+                font-size: 0.9rem;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .role-selection input {
+                width: auto;
+                margin-right: 5px;
+                accent-color: var(--primary-blue);
+            }
+
+            #studentFields {
+                width: 100%;
+                max-height: 200px;
+                overflow: hidden;
+                transition: all 0.4s ease;
+            }
+
+            #studentFields.hidden {
+                max-height: 0;
+                margin: 0;
+                opacity: 0;
+            }
+
+            /* Forgot Password Section */
+            #forgotPasswordContainer {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                animation: fadeUp 0.4s ease;
+            }
+
+            @keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* --- MOBILE RESPONSIVE --- */
+            @media (max-width: 768px) {
+                .container {
+                    width: 100%;
+                    min-height: 850px;
+                    /* Make it tall enough */
+                    border-radius: 0;
+                    box-shadow: none;
+                    flex-direction: column;
+                }
+
+                /* Hide the sliding overlay on mobile */
+                .overlay-container {
+                    display: none;
+                }
+
+                .form-container {
+                    position: relative;
+                    width: 100%;
+                    height: auto;
+                    min-height: 400px;
+                    padding: 30px;
+                    opacity: 1 !important;
+                    z-index: 1 !important;
+                    transform: none !important;
+                    display: none;
+                    /* Hide both initially */
+                }
+
+                /* We will toggle 'flex' on mobile */
+                .sign-in-container.mobile-visible {
+                    display: flex;
+                }
+
+                .sign-up-container.mobile-visible {
+                    display: flex;
+                }
+
+                /* Mobile toggle link (since we lost the overlay buttons) */
+                .mobile-toggle {
+                    display: block;
+                    margin-top: 20px;
+                    color: var(--primary-blue);
+                    cursor: pointer;
+                    font-weight: 600;
+                    text-decoration: underline;
+                }
+
+                /* Hide toggle on desktop */
+                @media (min-width: 769px) {
+                    .mobile-toggle {
+                        display: none;
+                    }
+                }
+            }
+
+            /* Ensure toggle is hidden on desktop by default in css logic */
+            .mobile-toggle {
+                display: none;
+            }
+
+            @media (max-width: 768px) {
+                .mobile-toggle {
+                    display: block;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+        <div id="toast-container"></div>
+
+        <div class="container" id="container">
+
+            <div class="form-container sign-up-container" id="signUpContainerMobile">
+                <form id="registerForm">
+                    <h1>Create Account</h1>
+
+                    <div class="role-selection">
+                        <label><input type="radio" name="role" value="student" checked> Student</label>
+                        <label><input type="radio" name="role" value="organization"> Organization</label>
+                    </div>
+
+                    <input type="text" name="name" placeholder="Name" required />
+
+                    <div id="studentFields">
+                        <input type="text" name="collegeName" placeholder="College Name" id="collegeNameInput" />
+                        <input type="text" name="skills" placeholder="Skills (e.g., Python, CSS)" id="skillsInput" />
+                    </div>
+
+                    <input type="email" name="email" placeholder="Email" required />
+                    <p
+                        style="margin: 0 0 10px; font-size: 0.7rem; color: #666; width: 100%; text-align: left; padding-left: 5px;">
+                        *Use official email
+                    </p>
+                    <input type="password" name="password" placeholder="Password" required />
+
+                    <button type="submit">Sign Up</button>
+
+                    <p class="mobile-toggle" onclick="toggleMobile('signin')">Already have an account? Sign In</p>
+                </form>
+            </div>
+
+            <div class="form-container sign-in-container mobile-visible" id="signInContainerMobile">
+                <form id="loginForm">
+                    <h1>Sign in</h1>
+                    <input type="email" name="email" placeholder="Email" required />
+                    <input type="password" name="password" placeholder="Password" required />
+
+                    <a href="#" id="forgotPassBtn">Forgot your password?</a>
+                    <button type="submit">Sign In</button>
+
+                    <p class="mobile-toggle" onclick="toggleMobile('signup')">Don't have an account? Sign Up</p>
+                </form>
+
+                <form id="forgotPasswordContainer">
+                    <h1 style="font-size: 1.5rem;">Reset Password</h1>
+                    <p style="margin-bottom: 20px;">Enter your email to receive a reset link.</p>
+                    <input type="email" id="resetEmail" placeholder="Enter your email" />
+                    <button type="button" id="sendResetLink">Send Link</button>
+                    <button type="button" class="ghost" id="backToLogin"
+                        style="color: #333; border: 1px solid #ccc; margin-top: 10px;">Back to Login</button>
+                </form>
+            </div>
+
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1>Welcome Back!</h1>
+                        <p>To keep connected with us please login with your personal info</p>
+                        <button class="ghost" id="signIn">Sign In</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1>Hello, Friend!</h1>
+                        <p>Enter your personal details and start your journey with us</p>
+                        <button class="ghost" id="signUp">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            // --- TOAST FUNCTION ---
+            function showToast(message, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+                toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.add('hide');
+                    toast.addEventListener('animationend', () => toast.remove());
+                }, 3000);
+            }
+
+            // --- DESKTOP SLIDER LOGIC ---
+            const signUpButton = document.getElementById('signUp');
+            const signInButton = document.getElementById('signIn');
+            const container = document.getElementById('container');
+
+            signUpButton.addEventListener('click', () => {
+                container.classList.add("right-panel-active");
+            });
+
+            signInButton.addEventListener('click', () => {
+                container.classList.remove("right-panel-active");
+            });
+
+            // --- MOBILE TOGGLE LOGIC ---
+            // On mobile, the overlay is hidden, so we manually toggle visibility of containers
+            function toggleMobile(target) {
+                const signInCont = document.getElementById('signInContainerMobile');
+                const signUpCont = document.getElementById('signUpContainerMobile');
+
+                if (target === 'signup') {
+                    signInCont.classList.remove('mobile-visible');
+                    signUpCont.classList.add('mobile-visible');
+                } else {
+                    signUpCont.classList.remove('mobile-visible');
+                    signInCont.classList.add('mobile-visible');
+                }
+            }
+
+            // --- FORGOT PASSWORD LOGIC ---
+            const loginForm = document.getElementById('loginForm');
+            const forgotForm = document.getElementById('forgotPasswordContainer');
+            const forgotPassBtn = document.getElementById('forgotPassBtn');
+            const backToLogin = document.getElementById('backToLogin');
+            const sendResetLink = document.getElementById('sendResetLink');
+
+            forgotPassBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginForm.style.display = 'none';
+                forgotForm.style.display = 'flex';
+            });
+
+            backToLogin.addEventListener('click', () => {
+                forgotForm.style.display = 'none';
+                loginForm.style.display = 'flex';
+            });
+
+            sendResetLink.addEventListener('click', () => {
+                const email = document.getElementById('resetEmail').value;
+                if (email.includes('@')) {
+                    showToast(`Reset link sent to ${email}`, 'success');
+                    setTimeout(() => backToLogin.click(), 2000);
+                } else {
+                    showToast('Please enter a valid email', 'error');
+                }
+            });
+
+            // --- DYNAMIC FIELDS (STUDENT VS ORGANIZATION) ---
+            const roleRadios = document.querySelectorAll('input[name="role"]');
+            const studentFields = document.getElementById('studentFields');
+            const collegeInput = document.getElementById('collegeNameInput');
+            const skillsInput = document.getElementById('skillsInput');
+
+            function toggleRoles() {
+                const role = document.querySelector('input[name="role"]:checked').value;
+                if (role === 'student') {
+                    studentFields.classList.remove('hidden');
+                    collegeInput.required = true;
+                    skillsInput.required = true;
+                } else {
+                    studentFields.classList.add('hidden');
+                    collegeInput.required = false;
+                    skillsInput.required = false;
+                }
+            }
+
+            roleRadios.forEach(r => r.addEventListener('change', toggleRoles));
+            // Init
+            toggleRoles();
+
+           // --- FORM SUBMISSIONS (REAL API) ---
+
+            // REGISTER
+            document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const form = e.target;
+                const formData = new FormData(form);
+
+                const data = {
+                    role: formData.get("role"),                 // student / organization
+                    name: formData.get("name"),
+                    collegeName: formData.get("collegeName"),
+                    skills: formData.get("skills"),
+                    email: formData.get("email"),
+                    password: formData.get("password"),
+                };
+
+                try {
+                    const res = await fetch("http://localhost:3000/auth/register", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data),
+                    });
+
+                    const json = await res.json();
+
+                    if (!res.ok) {
+                        showToast(json.error || "Registration failed", "error");
+                        return;
+                    }
+
+                    showToast("Account created! Please sign in.", "success");
+
+                    // Switch to login view
+                    if (window.innerWidth > 768) {
+                        container.classList.remove("right-panel-active");
+                    } else {
+                        toggleMobile('signin');
+                    }
+
+                    form.reset();
+                    toggleRoles(); // reset student fields visibility
+                } catch (err) {
+                    console.error(err);
+                    showToast("Network error. Try again.", "error");
+                }
+            });
+
+    // LOGIN
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        const data = {
+            email: formData.get("email"),
+            password: formData.get("password"),
+        };
+
+        try {
+            const res = await fetch("http://localhost:3000/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            const json = await res.json();
+
+            if (!res.ok) {
+                showToast(json.error || "Login failed", "error");
+                return;
+            }
+
+            showToast("Login successful!", "success");
+
+            // ✅ SINGLE SOURCE OF TRUTH
+            localStorage.setItem("login_id", json.login_id);
+            localStorage.setItem("role", json.role);
+            localStorage.setItem("name", json.name);
+
+            // ✅ ROLE-BASED REDIRECT
+            if (json.role === "student") {
+                window.location.href = "/student/studenthome.html";
+            } else if (json.role === "organization") {
+                window.location.href = "/organization/projectselect.html";
+            } else if (json.role === "admin") {
+                window.location.href = "/admin/adminhome.html";
+            } else {
+                window.location.href = "/student/studenthome.html";
+            }
+
+        } catch (err) {
+            console.error(err);
+            showToast("Network error. Try again.", "error");
+        }
+    });
+
+            // --- PARTICLES ---
+            particlesJS("particles-js", { particles: { number: { value: 60, }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.2 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" } } }, retina_detect: true });
+        </script>
+    </body>
+
+</html>

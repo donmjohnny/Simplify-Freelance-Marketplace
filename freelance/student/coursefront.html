@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Simplify - Courses</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-light: #f0f4ff;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                --border-radius: 20px;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 0 1rem;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                overflow-x: hidden;
+                min-height: 100vh;
+            }
+
+            /* Particles background */
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            /* Navbar */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 2rem;
+                background: var(--glass-bg);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 1rem auto;
+                backdrop-filter: blur(12px);
+                position: relative;
+                z-index: 10;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                /* Required for the underline pseudo-element */
+                padding-bottom: 5px;
+                /* Creates space for the underline */
+            }
+
+            /* Animated underline pseudo-element */
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover {
+                color: var(--text-light);
+                /* Lighten text on hover for better effect */
+            }
+
+            /* The animation trigger */
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1rem;
+                transition: color 0.3s ease;
+            }
+
+            .nav-icons a:hover {
+                color: var(--text-light);
+            }
+
+            /* Main Content Glass Box */
+            .glass-box {
+                width: 100%;
+                max-width: 1200px;
+                box-sizing: border-box;
+                padding: 2rem;
+                background: var(--glass-bg);
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                backdrop-filter: blur(12px);
+                margin-bottom: 2rem;
+                position: relative;
+                z-index: 5;
+            }
+
+            /* Courses Section Styling */
+            .courses-section {
+                width: 100%;
+                text-align: center;
+            }
+
+            .section-header {
+                margin-bottom: 3rem;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .section-title {
+                font-size: 30px;
+                margin-bottom: 0.5rem;
+                font-weight: 700;
+                margin-top: 0;
+            }
+
+            .section-description {
+                font-size: 1.1rem;
+                opacity: 0.8;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            .courses-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 2rem;
+            }
+
+            .course-card {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-radius: var(--border-radius);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+                transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease-in-out;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                text-align: left;
+            }
+
+            .course-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2), 0 0 40px rgba(60, 130, 246, 0.4);
+            }
+
+            .course-image {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                display: block;
+            }
+
+            .course-content {
+                padding: 1.5rem;
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+            }
+
+            .course-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+            }
+
+            .course-description {
+                font-size: 0.95rem;
+                color: var(--text-light);
+                margin-bottom: 1rem;
+                flex-grow: 1;
+            }
+
+            .course-button {
+                display: inline-block;
+                align-self: flex-start;
+                background: rgba(255, 255, 255, 0.15);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50px;
+                color: var(--white);
+                padding: 0.6rem 1.5rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                text-decoration: none;
+            }
+
+            .course-button:hover {
+                background: var(--white);
+                color: var(--primary-blue);
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .nav-links {
+                    display: none;
+                }
+            }
+             .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+
+        <nav class="navbar">
+            <div class="logo-container">
+            <a href="studenthome.html">
+                <h3>Simplify</h3>
+            </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="coursefront.html">Courses</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="trialproject.html">Trial Projects</a></li>
+            
+                <li><a href="projectselect.html">Project Display</a></li>
+             
+                <li><a href="report.html">Report</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+            </div>
+        </nav>
+
+        <div class="glass-box">
+            <section class="courses-section">
+                <div class="section-header">
+                    <h2 class="section-title">Turn Knowledge Into Opportunities</h2>
+                    <p class="section-description">
+                        Every expert was once a beginner. We've built a space where you can learn industry-ready
+                        skills and showcase your talent in the freelance marketplace. Whether you’re just starting out
+                        or already skilled, this is your place to grow.
+                    </p>
+                </div>
+
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <img src="https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                            alt="Web Development" class="course-image" />
+                        <div class="course-content">
+                            <h3 class="course-title">Web Development</h3>
+                            <p class="course-description">
+                                Code your ideas into reality by learning HTML, CSS, and JavaScript fundamentals.
+                            </p>
+                            <a href="webdevcourse.html" class="course-button">Explore</a>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <img src="https://images.pexels.com/photos/5473298/pexels-photo-5473298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                            alt="Cybersecurity" class="course-image" />
+                        <div class="course-content">
+                            <h3 class="course-title">Cybersecurity</h3>
+                            <p class="course-description">
+                                Be the guardian of the digital world by protecting data from modern cyber threats.
+                            </p>
+                            <a href="cybersecurity.html" class="course-button">Explore</a>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                            alt="Data Analytics" class="course-image" />
+                        <div class="course-content">
+                            <h3 class="course-title">Data Analytics</h3>
+                            <p class="course-description">
+                                Discover how to collect, clean, and visualize data for actionable insights.
+                            </p>
+                            <a href="dataanalytics.html" class="course-button">Explore</a>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <img src="https://cdn.pixabay.com/photo/2015/12/11/09/30/mobile-phone-1087845_1280.jpg"
+                            alt="Software Development" class="course-image" />
+                        <div class="course-content">
+                            <h3 class="course-title">Software Development</h3>
+                            <p class="course-description">
+                                Design, Develop, Deliver. Learn to build software that drives progress.
+                            </p>
+                            <a href="softwaredevelopment.html" class="course-button">Explore</a>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <img src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                            alt="AI/ML" class="course-image" />
+                        <div class="course-content">
+                            <h3 class="course-title">AI & Machine Learning</h3>
+                            <p class="course-description">
+                                Turn data into intelligence. Shape the future with smart, automated solutions.
+                            </p>
+                            <a href="AI.html" class="course-button">Explore</a>
+                        </div>
+                    </div>
+                    <div class="course-card">
+                        <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                            alt="data science" class="course-image" />
+                        <div class="course-content">
+                            <h3 class="course-title">Data Science</h3>
+                            <p class="course-description">
+                                Data science is the practice of using scientific methods, algorithms, and systems to
+                                extract knowledge and actionable
+                                insights from structured and unstructured data.
+                            </p>
+                            <a href="datascience.html" class="course-button">Explore</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#ffffff" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+                    "move": { "enable": true, "speed": 2, "direction": "none", "out_mode": "out" }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": { "enable": true, "mode": "repulse" },
+                        "onclick": { "enable": true, "mode": "push" },
+                        "resize": true
+                    },
+                    "modes": { "repulse": { "distance": 100 }, "push": { "particles_nb": 4 } }
+                },
+                "retina_detect": true
+            });
+        </script>
+    </body>
+
+</html>

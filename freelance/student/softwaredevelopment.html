@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Development Courses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-blue: #3B82F6;
+      --dark-blue: #255AB4;
+      --white: #ffffff;
+      --text-light: #f0f4ff;
+      --sub-text-color: #e2e8f0;
+      --glass-bg: rgba(255, 255, 255, 0.15);
+      --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      --card-hover-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+      --border-radius: 20px;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 8rem 1rem 2rem 1rem;
+      background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+      color: var(--white);
+      min-height: 100vh;
+      box-sizing: border-box;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    /* --- Navbar --- */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 50px;
+      box-shadow: var(--card-shadow);
+      max-width: 1200px;
+      width: 90%;
+      box-sizing: border-box;
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      transition: all 0.3s ease;
+    }
+
+    .logo-container img {
+      height: 40px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-container img:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--white);
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-icons {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-icons a {
+      font-size: 1.3rem;
+      color: var(--white);
+      margin-left: 1.5rem;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-icons a:hover {
+      transform: scale(1.2);
+      color: var(--text-light);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 101;
+    }
+
+    /* --- Glass Box Container --- */
+    .glass-box {
+      width: 100%;
+      max-width: 1200px;
+      box-sizing: border-box;
+      padding: 2.5rem;
+      background: var(--glass-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(12px);
+      margin: 0 auto;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Hero Section */
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 30px;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .section-description {
+      font-size: 1.1rem;
+      opacity: 0.8;
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--sub-text-color);
+    }
+
+    /* Search & Filter Bar */
+    .controls-container {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 3rem;
+    }
+
+    .search-box {
+      flex-grow: 1;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      box-sizing: border-box;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      font-size: 1rem;
+      outline: none;
+    }
+
+    #searchInput::placeholder {
+      color: var(--sub-text-color);
+    }
+
+    .sort-button {
+      padding: 1rem 1.5rem;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.15);
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Courses Grid */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .course-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--card-hover-shadow);
+    }
+
+    .course-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 0;
+      flex-grow: 1;
+    }
+
+    .course-description {
+      font-size: 0.95rem;
+      color: var(--sub-text-color);
+      margin-bottom: 1rem;
+    }
+
+    .course-details {
+      font-size: 0.85rem;
+      display: block;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .course-button {
+      display: inline-block;
+      align-self: flex-start;
+      margin-top: 1.5rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      color: var(--white);
+      padding: 0.6rem 1.5rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .course-button:hover {
+      background: var(--white);
+      color: var(--primary-blue);
+    }
+
+    .no-results {
+      display: none;
+      text-align: center;
+      margin-top: 2rem;
+      color: var(--sub-text-color);
+    }
+
+    .loading-message {
+      text-align: center;
+      color: var(--sub-text-color);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup.active {
+      display: flex;
+    }
+
+    .popup-content {
+      background: var(--glass-bg);
+      padding: 2.5rem;
+      border-radius: var(--border-radius);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .popup-content h3 {
+      margin-top: 0;
+    }
+
+    .sort-options-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .sort-options-group h4 {
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--sub-text-color);
+    }
+
+    .sort-options-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .sort-options-buttons button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .sort-options-buttons button:hover {
+      background-color: var(--white);
+      color: var(--primary-blue);
+    }
+
+    .popup-content .close-button {
+      background-color: var(--white);
+      color: var(--primary-blue);
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .navbar {
+        flex-wrap: wrap;
+        width: 95%;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(15px);
+        flex-direction: column;
+        display: none;
+        padding: 1.5rem 0;
+        border-radius: 20px;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links li {
+        margin: 0.75rem 0;
+      }
+
+      .nav-icons {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .controls-container {
+        flex-direction: column;
+      }
+
+      .sort-button {
+        width: 100%;
+      }
+    }
+        .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+  </style>
+</head>
+
+<body>
+  <div id="particles-js"></div>
+
+  <nav class="navbar">
+    <div class="logo-container">
+      <a href="studenthome.html">
+        <h3>Simplify</h3>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="coursefront.html">Courses</a></li>
+      <li><a href="notes.html">Notes</a></li>
+      <li><a href="trialproject.html">Trial Projects</a></li>
+      <li><a href="projectselect.html">Project Display</a></li>
+      <li><a href="report.html">Report</a></li>
+    </ul>
+    <div class="nav-icons">
+      <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+      <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+    </div>
+    <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+  </nav>
+
+  <div class="glass-box">
+    <section class="section-header">
+      <h1 class="section-title">Software Development Courses</h1>
+      <p class="section-description">
+        These courses build strong foundations in programming languages, algorithms, data structures,
+        and software engineering principles.
+      </p>
+    </section>
+
+    <div class="controls-container">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search courses...">
+      </div>
+      <button class="sort-button" id="openSortPopup">Sort & Filter</button>
+    </div>
+
+    <p class="loading-message" id="loadingMessage">Loading courses...</p>
+
+    <section class="courses-section">
+      <div class="courses-grid" id="coursesGrid">
+        <!-- Dynamic cards will be injected here -->
+      </div>
+      <p class="no-results" id="noResults">No courses found. Try another search or filter.</p>
+    </section>
+  </div>
+
+  <div class="popup" id="sortPopup">
+    <div class="popup-content">
+      <h3>Sort and Filter Courses</h3>
+
+      <div class="sort-options-group">
+        <h4>Organization</h4>
+        <div class="sort-options-buttons">
+          <button onclick="sortCourses('org', '')">All</button>
+          <button onclick="sortCourses('org', 'harvard')">Harvard</button>
+          <button onclick="sortCourses('org', 'skillindia')">Skill India</button>
+          <button onclick="sortCourses('org', 'cursa')">Cursa</button>
+          <button onclick="sortCourses('org', 'simplilearn')">SimpliLearn</button>
+          <button onclick="sortCourses('org', 'microsoft')">Microsoft</button>
+        </div>
+      </div>
+
+      <div class="sort-options-group">
+        <h4>Level</h4>
+        <div class="sort-options-buttons">
+          <button onclick="sortCourses('level', '')">All</button>
+          <button onclick="sortCourses('level', 'Beginner')">Beginner</button>
+          <button onclick="sortCourses('level', 'Intermediate')">Intermediate</button>
+        </div>
+      </div>
+
+      <button class="close-button" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Particles.js setup
+      particlesJS("particles-js", {
+        particles: {
+          number: { value: 60 },
+          color: { value: "#ffffff" },
+          shape: { type: "circle" },
+          opacity: { value: 0.5, random: true },
+          size: { value: 3, random: true },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#ffffff",
+            opacity: 0.2
+          },
+          move: {
+            enable: true,
+            speed: 2,
+            direction: "none",
+            out_mode: "out"
+          }
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" }
+          }
+        },
+        retina_detect: true
+      });
+
+      // Mobile menu toggle
+      const menuToggle = document.querySelector('.menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+      menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        const icon = menuToggle.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+      });
+
+      const searchInput = document.getElementById("searchInput");
+      const coursesGrid = document.getElementById("coursesGrid");
+      const noResults = document.getElementById("noResults");
+      const loadingMessage = document.getElementById("loadingMessage");
+      const openSortPopupButton = document.getElementById("openSortPopup");
+      const sortPopup = document.getElementById("sortPopup");
+
+      let currentOrgFilter = "";
+      let currentLevelFilter = "";
+
+      // Map organization string from DB to data-org key used in filters
+      function mapOrgToKey(org = "") {
+        const o = org.toLowerCase();
+        if (o.includes("harvard")) return "harvard";
+        if (o.includes("skill") && o.includes("india")) return "skillindia";
+        if (o.includes("cursa")) return "cursa";
+        if (o.includes("simpli")) return "simplilearn";
+        if (o.includes("microsoft")) return "microsoft";
+        return o.replace(/\s+/g, ""); // fallback
+      }
+
+      function createCourseCard(course) {
+        const card = document.createElement("div");
+        card.className = "course-card";
+
+        const orgKey = mapOrgToKey(course.organization || "");
+        card.setAttribute("data-org", orgKey);
+        card.setAttribute("data-level", course.level || "");
+
+        const safeDuration = course.duration || "N/A";
+        const safeLevel = course.level || "N/A";
+        const safeUrl = (course.external_url && course.external_url.trim() !== "")
+          ? course.external_url
+          : "#";
+
+        card.innerHTML = `
+          <h3 class="course-title">${course.title}</h3>
+          <p class="course-description">${course.short_description}</p>
+          <strong class="course-details">
+            Organization: ${course.organization}<br>
+            Duration: ${safeDuration} <br>
+            Level: ${safeLevel}
+          </strong>
+          <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="course-button">
+            Official Website
+          </a>
+        `;
+
+        return card;
+      }
+
+      function getCourseCards() {
+        return document.querySelectorAll(".course-card");
+      }
+
+      function filterCourses() {
+        const query = (searchInput.value || "").toLowerCase();
+        let visibleCount = 0;
+        const cards = getCourseCards();
+
+        cards.forEach(card => {
+          const title = card.querySelector(".course-title")?.textContent.toLowerCase() || "";
+          const desc = card.querySelector(".course-description")?.textContent.toLowerCase() || "";
+          const cardOrg = card.getAttribute("data-org") || "";
+          const cardLevel = card.getAttribute("data-level") || "";
+
+          const matchesSearch = title.includes(query) || desc.includes(query);
+          const matchesOrg = !currentOrgFilter || cardOrg === currentOrgFilter;
+          const matchesLevel = !currentLevelFilter || cardLevel === currentLevelFilter;
+
+          if (matchesSearch && matchesOrg && matchesLevel) {
+            card.style.display = "flex";
+            visibleCount++;
+          } else {
+            card.style.display = "none";
+          }
+        });
+
+        noResults.style.display = visibleCount === 0 ? "block" : "none";
+      }
+
+      function sortCourses(type, value) {
+        if (type === "org") currentOrgFilter = value;
+        if (type === "level") currentLevelFilter = value;
+        filterCourses();
+        closePopup();
+      }
+
+      function openPopup() {
+        sortPopup.classList.add("active");
+      }
+
+      function closePopup() {
+        sortPopup.classList.remove("active");
+      }
+
+      async function loadCourses() {
+        try {
+          loadingMessage.style.display = "block";
+          console.log("🔍 Fetching Software Dev courses from: /student/softwaredev-courses");
+
+          // If in server.js you used app.use("/api/student", studentRoutes);
+          // then change the line below to: fetch("/api/student/softwaredev-courses")
+          const res = await fetch("/student/softwaredev-courses");
+
+          console.log("✅ Response status:", res.status);
+
+          if (!res.ok) {
+            throw new Error("Network response was not ok, status " + res.status);
+          }
+
+          const data = await res.json();
+          console.log("📦 Response JSON:", data);
+
+          if (!data.success) {
+            throw new Error(data.error || "Failed to fetch Software Development courses");
+          }
+
+          coursesGrid.innerHTML = "";
+          data.courses.forEach(course => {
+            const card = createCourseCard(course);
+            coursesGrid.appendChild(card);
+          });
+
+          filterCourses();
+        } catch (err) {
+          console.error("❌ Error loading Software Development courses:", err);
+          loadingMessage.textContent = "Failed to load courses. Please check the console.";
+        } finally {
+          setTimeout(() => {
+            loadingMessage.style.display = "none";
+          }, 300);
+        }
+      }
+
+      // Event listeners
+      openSortPopupButton.addEventListener("click", openPopup);
+      searchInput.addEventListener("keyup", filterCourses);
+
+      // Expose to window for inline onclick
+      window.sortCourses = sortCourses;
+      window.closePopup = closePopup;
+
+      // Initial load
+      loadCourses();
+    });
+  </script>
+</body>
+
+</html>

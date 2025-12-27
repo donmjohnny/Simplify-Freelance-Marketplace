@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Dashboard</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-light: #f0f4ff;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                --border-radius: 20px;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 1rem;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                overflow-x: hidden;
+                min-height: 100vh;
+            }
+
+            /* Particles background */
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            /* Navbar */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 2rem;
+                background: var(--glass-bg);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 1rem auto;
+                backdrop-filter: blur(12px);
+                position: relative;
+                z-index: 10;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+            .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover {
+                color: var(--text-light);
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1rem;
+                transition: color 0.3s ease;
+            }
+
+            .nav-icons a:hover {
+                color: var(--text-light);
+            }
+
+            /* Glass Box Containers */
+            .glass-box {
+                width: 100%;
+                max-width: 1100px;
+                padding: 2rem;
+                background: var(--glass-bg);
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                backdrop-filter: blur(12px);
+                margin-bottom: 2rem;
+                position: relative;
+                z-index: 5;
+                animation: fadeInUp 1s ease;
+                box-sizing: border-box;
+            }
+
+            .glass-box h2 {
+                text-align: center;
+                margin-top: 0;
+                margin-bottom: 1.5rem;
+                font-size: 1.8rem;
+                color: #fff;
+            }
+
+            /* Dashboard Welcome Section */
+            .dashboard-container {
+                text-align: center;
+                animation: fadeInUp 1s ease;
+            }
+
+            .dashboard-container h2 {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+                color: var(--white);
+            }
+
+            .dashboard-container p {
+                font-size: 1.1rem;
+                line-height: 1.6;
+                color: #f0f4ff;
+            }
+
+            /* Bento Grid */
+            .bento-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                grid-auto-rows: 180px;
+                gap: 1.5rem;
+                animation: fadeIn 1.2s ease;
+            }
+
+            .bento-item {
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: 600;
+                font-size: 1.2rem;
+                padding: 2rem;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+                animation: popUp 0.8s ease;
+            }
+
+            .bento-item i {
+                font-size: 1.5rem;
+                margin-right: 0.5rem;
+                animation: floatIcon 3s ease-in-out infinite;
+            }
+
+            .bento-item.white {
+                background: #ffffff;
+                color: var(--primary-blue);
+            }
+
+            .bento-item.blue {
+                background: var(--primary-blue);
+                color: #ffffff;
+            }
+
+            .bento-item:hover {
+                transform: translateY(-10px) scale(1.03);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            }
+
+            /* Count Circle */
+            .count-circle {
+                position: absolute;
+                top: -15px;
+                right: -15px;
+                width: 50px;
+                height: 50px;
+                border-top: 4px solid var(--primary-blue);
+                border-left: 4px solid var(--primary-blue);
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                animation: moveCircle 3s ease-in-out infinite alternate;
+                background: rgba(0, 0, 0, 0.1);
+                color: var(--white);
+            }
+
+            @keyframes moveCircle {
+                0% {
+                    transform: translate(0, 0) rotate(0deg);
+                }
+
+                50% {
+                    transform: translate(-5px, 5px) rotate(20deg);
+                }
+
+                100% {
+                    transform: translate(0, 0) rotate(0deg);
+                }
+            }
+
+            /* Special Sizes */
+            .wide {
+                grid-column: span 2;
+            }
+
+            .tall {
+                grid-row: span 2;
+            }
+
+            .big {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+
+            /* Animations */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes popUp {
+                0% {
+                    opacity: 0;
+                    transform: scale(0.8);
+                }
+
+                100% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            @keyframes floatIcon {
+
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-6px);
+                }
+            }
+
+            /* Responsive */
+            @media (max-width: 992px) {
+                .nav-links {
+                    display: none;
+                }
+
+                .bento-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                    grid-auto-rows: 150px;
+                }
+
+                .wide,
+                .tall,
+                .big {
+                    grid-column: span 1;
+                    grid-row: span 1;
+                }
+            }
+
+            .btn {
+                font-family: sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                margin: auto;
+                font-size: 18px;
+                font-weight: 600;
+                color: #ffff;
+                background: rgba(255, 255, 255, 0.15);
+                border: 2px solid white;
+                border-radius: 9999px;
+                padding: 10px 16px;
+                position: relative;
+                overflow: hidden;
+                cursor: pointer;
+                z-index: 10;
+                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            }
+
+            .btn::before {
+                content: "";
+                position: absolute;
+                left: -100%;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: #3B82F6;
+                border-radius: 9999px;
+                transition: all 0.7s ease;
+                z-index: -1;
+            }
+
+            .btn:hover::before {
+                left: 0;
+                transform: scale(1.5);
+            }
+
+            .btn:hover {
+                color: #f9fafb;
+            }
+
+            .btn svg {
+                width: 32px;
+                height: 32px;
+                padding: 6px;
+                border-radius: 50%;
+                border: 1px solid #374151;
+                background: #f9fafb;
+                fill: #1f2937;
+                transform: rotate(45deg);
+                transition: all 0.3s ease;
+            }
+
+            .btn:hover svg {
+                transform: rotate(90deg);
+                border: none;
+                background: #f9fafb;
+                fill: #1f2937;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+
+        <nav class="navbar">
+            <div class="logo-container">
+               <a href="adminhome.html"><h3>Simplify</h3></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="coursefront.html">Courses</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="trialproject.html">Trial Projects</a></li>
+                
+            </ul>
+            <div class="nav-links">
+            </div>
+        </nav>
+
+        <div class="glass-box dashboard-container">
+            <h2>Welcome Admin to Simplify</h2>
+            <p>This platform is a freelance marketplace created for students, where you can earn money by completing
+                tasks
+                and projects posted by organizations. If you don’t have enough skills yet, you can first learn through
+                resources
+                and training available here, and once you improve, you can start taking up projects to earn. It is a
+                simple learn
+                and earn space — built by an engineer, for engineers.</p>
+        </div>
+
+        <div class="glass-box">
+            <h2>Explore Features</h2>
+            <div class="bento-grid">
+
+                <div class="bento-item white wide">
+                    <i class="fa-solid fa-graduation-cap"></i> Courses
+                    <div class="count-circle">12</div>
+                </div>
+
+                <div class="bento-item blue tall">
+                    <i class="fa-solid fa-book-open"></i> Notes
+                    <div class="count-circle">25</div>
+                </div>
+
+                <div class="bento-item white">
+                    <i class="fa-solid fa-briefcase"></i> Freelance Projects
+                    <div class="count-circle">8</div>
+                </div>
+
+                <div class="bento-item blue">
+                    <i class="fa-solid fa-coins"></i> Earnings
+                </div>
+
+                <div class="bento-item white">
+                    <i class="fa-solid fa-users"></i> Clients
+                    <div class="count-circle">34</div>
+                </div>
+                <div class="bento-item white">
+                    <i class="fa-solid fa-star"></i> Reviews
+                    <div class="count-circle">22</div>
+                </div>
+
+                <div class="bento-item blue">
+                    <i class="fa-solid fa-lightbulb"></i> Verified Students and Companies
+                    <div class="count-circle">15</div>
+                </div>
+
+                <div class="bento-item blue wide">
+                    <i class="fa-solid fa-chart-line"></i> For Engineers by an Engineer
+
+                </div>
+
+                <div class="bento-item white">
+                    <i class="fa-solid fa-award"></i>Trial Projects
+                    <div class="count-circle">50</div>
+                </div>
+
+              
+
+            </div>
+        </div>
+        <div class="glass-box">
+            <h2>About Us</h2>
+            <p style="text-align:center; font-size:1.1rem; line-height:1.6;">
+                Simplify is a platform for engineers, created by engineers, designed to make students more flexible and
+                ready to work on
+                real-world organizational projects while earning funds to support themselves during their studies. Both
+                skilled and
+                non-skilled students can benefit: skilled learners can take courses and work on freelance projects,
+                while
+                others can
+                access modern courses and trial projects to gain experience. Enjoy learning here, studying here, earning
+                here, and take
+                a successful step in building your career.<br><br>
+                <q>It's your life. Make it in your way. But think about the one with you
+                    too.</q><br>&nbsp;&nbsp;&nbsp;<i style="margin-left: 500px;">-Developer Simplify</i>
+            </p>
+        </div>
+
+        <div class="glass-box">
+            <h2>Ready to Get Started ?</h2>
+            <p style="text-align:center; font-size:1.1rem; line-height:1.6;">
+                Join us to take a vital step in your career. Make your career a beautiful one.<br><br>
+                <button class="btn" type="submit">
+                    Get Started
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 19">
+                        <path
+                            d="M7 18C7 18.5523 7.44772 19 8 19C8.55228 19 9 18.5523 9 18H7ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 18L9 1H7L7 18H9Z">
+                        </path>
+                    </svg>
+                </button>
+
+            </p>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#ffffff" },
+                    "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" } },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+                    "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": { "enable": true, "mode": "repulse" },
+                        "onclick": { "enable": true, "mode": "push" },
+                        "resize": true
+                    },
+                    "modes": { "repulse": { "distance": 100 }, "push": { "particles_nb": 4 } }
+                },
+                "retina_detect": true
+            });
+        </script>
+    </body>
+
+</html>

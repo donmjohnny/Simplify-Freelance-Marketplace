@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Simplify Marketplace</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --glass-bg: rgba(255, 255, 255, 0.1);
+                --glass-border: rgba(255, 255, 255, 0.2);
+                --accent-green: #4cd137;
+                --accent-gold: #f1c40f;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                overflow-x: hidden;
+            }
+
+            #particles-js {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            /* --- NAVBAR --- */
+            .navbar {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 100;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 5%;
+                box-sizing: border-box;
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(15px);
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            .logo {
+                font-weight: 700;
+                font-size: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            /* --- HERO SECTION --- */
+            .hero-section {
+                margin-top: 100px;
+                text-align: center;
+                padding: 40px 20px;
+                z-index: 1;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin-bottom: 15px;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+                opacity: 0.8;
+                max-width: 700px;
+                margin: 0 auto;
+                line-height: 1.6;
+            }
+
+            /* --- GRID LAYOUT --- */
+            .container {
+                width: 90%;
+                max-width: 1200px;
+                margin: 0 auto 50px auto;
+                z-index: 1;
+            }
+
+            .project-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                gap: 30px;
+            }
+
+            /* --- CARD DESIGN --- */
+            .project-card {
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                border: 1px solid var(--glass-border);
+                border-radius: 20px;
+                padding: 25px;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .project-card:hover {
+                transform: translateY(-10px);
+                background: rgba(255, 255, 255, 0.15);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Card Header: Simplified (Just Logo + Name) */
+            .card-header {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding-bottom: 15px;
+            }
+
+            .org-icon {
+                width: 45px;
+                height: 45px;
+                background: white;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--primary-blue);
+                font-size: 1.4rem;
+            }
+
+            .org-text h4 {
+                margin: 0;
+                font-size: 1.1rem;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+            }
+
+            /* Card Body */
+          /* Card Body */
+.card-body h3 {
+    margin: 10px 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.card-body p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    
+    /* Line Clamp Fix */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Chrome/Safari/Opera */
+    line-clamp: 2;         /* Standard property */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+            .skills-row {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-bottom: 15px;
+            }
+
+            .skill-tag {
+                font-size: 0.75rem;
+                background: rgba(255, 255, 255, 0.1);
+                padding: 4px 10px;
+                border-radius: 5px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            /* Card Footer: Reward & Actions */
+            .card-footer {
+                margin-top: auto;
+                padding-top: 15px;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .reward-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .reward-label {
+                font-size: 0.85rem;
+                opacity: 0.7;
+            }
+
+            .reward-amount {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--accent-gold);
+                text-shadow: 0 0 10px rgba(241, 196, 15, 0.3);
+            }
+
+            .btn-group {
+                display: flex;
+                gap: 10px;
+            }
+
+            .btn-milestone {
+                flex: 1;
+                background: transparent;
+                border: 1px solid var(--white);
+                color: var(--white);
+                padding: 10px;
+                border-radius: 50px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            .btn-milestone:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .btn-apply {
+                flex: 1;
+                background: var(--white);
+                color: var(--primary-blue);
+                border: none;
+                padding: 10px;
+                border-radius: 50px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            .btn-apply:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn-apply.applied {
+                background: var(--accent-green);
+                color: white;
+                cursor: default;
+            }
+
+            /* --- MODAL --- */
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(5px);
+                z-index: 1000;
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .modal-overlay.active {
+                display: flex;
+                animation: fadeIn 0.3s ease;
+            }
+
+            .modal-content {
+                background: #1e272e;
+                color: white;
+                width: 90%;
+                max-width: 500px;
+                border-radius: 20px;
+                padding: 30px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                position: relative;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+                animation: slideUp 0.3s ease;
+            }
+
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding-bottom: 15px;
+            }
+
+            .close-modal {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            .milestone-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+                margin-bottom: 10px;
+            }
+
+            .ms-title {
+                font-weight: 500;
+            }
+
+            .ms-price {
+                color: var(--accent-green);
+                font-weight: 700;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes slideUp {
+                from {
+                    transform: translateY(20px);
+                }
+
+                to {
+                    transform: translateY(0);
+                }
+            }
+
+            /* Toast */
+            #toast-container {
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                z-index: 2000;
+            }
+
+            .toast {
+                background: white;
+                color: #333;
+                padding: 15px 20px;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                border-left: 5px solid var(--primary-blue);
+                font-weight: 500;
+            }
+
+            @media (max-width: 768px) {
+                .hero-title {
+                    font-size: 1.8rem;
+                }
+
+                .project-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            
+                .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.8rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 90%;
+                box-sizing: border-box;
+                position: fixed;
+                top: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 100;
+                transition: all 0.3s ease;
+            }
+           
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1rem;
+                position: relative;
+                padding-bottom: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0%;
+                height: 2px;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: var(--white);
+                transition: 0.3s;
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons {
+                display: flex;
+                align-items: center;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1.5rem;
+            }
+               .logo {
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 10px
+            }
+                .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div id="particles-js"></div>
+        <div id="toast-container"></div>
+
+        <nav class="navbar">
+        <div class="logo-container">
+            <a href="studenthome.html">
+                <h3>Simplify</h3>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="coursefront.html">Courses</a></li>
+            <li><a href="notes.html">Notes</a></li>
+            <li><a href="trialproject.html">Trial Projects</a></li>
+            <li><a href="projectselect.html">Project Display</a></li>
+            <li><a href="report.html">Report</a></li>
+        </ul>
+        <div class="nav-icons">
+        
+            <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+        </div>
+       
+        </nav>
+
+        <div class="hero-section">
+            <div class="hero-title">Explore Premium Projects</div>
+            <div class="hero-subtitle">
+                Discover real-world projects. View detailed roadmaps, understand the rewards, and apply to build your
+                portfolio.
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="project-grid" id="grid">
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="milestoneModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 style="margin:0;">Project Roadmap</h3>
+                    <button class="close-modal" onclick="closeModal()">&times;</button>
+                </div>
+                <div id="modalBody">
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+       <script>
+        /* ================== PARTICLES ================== */
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 60 },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.3, random: true },
+                size: { value: 3 },
+                line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.1 },
+                move: { enable: true, speed: 1 }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "repulse" } }
+            },
+            retina_detect: true
+        });
+
+        /* ================== AUTH ================== */
+        const STUDENT_LOGIN_ID = localStorage.getItem("login_id");
+        if (!STUDENT_LOGIN_ID) {
+            alert("Login expired. Please login again.");
+            window.location.href = "/student/login.html";
+        }
+
+        /* ================== DOM ================== */
+        const grid = document.getElementById("grid");
+        const modal = document.getElementById("milestoneModal");
+        const modalBody = document.getElementById("modalBody");
+
+        /* ================== LOAD PROJECTS ================== */
+        fetch("/student/projects")
+            .then(res => res.json())
+            .then(data => {
+                if (!data.success) {
+                    grid.innerHTML = "<p>No projects available</p>";
+                    return;
+                }
+                renderProjects(data.projects);
+            });
+
+        /* ================== RENDER PROJECTS ================== */
+        function renderProjects(projects) {
+            grid.innerHTML = "";
+
+            projects.forEach(p => {
+                const card = document.createElement("div");
+                card.className = "project-card";
+
+                card.innerHTML = `
+          <div class="card-header">
+            <div class="org-icon"><i class="fa-solid fa-building"></i></div>
+            <div class="org-text">
+              <h4>${p.org_name}</h4>
+            </div>
+          </div>
+    
+          <div class="card-body">
+            <h3>${p.project_name}</h3>
+            <p>Real-world project uploaded by organization</p>
+          </div>
+    
+          <div class="card-footer">
+            <div class="reward-info">
+              <span class="reward-label">Total Reward</span>
+              <span class="reward-amount">₹${Number(p.total_value).toLocaleString("en-IN")}</span>
+            </div>
+    
+            <div class="btn-group">
+              <button class="btn-milestone" onclick="openMilestones(${p.project_id})">
+                <i class="fa-solid fa-list-check"></i> View Roadmap
+              </button>
+              <button class="btn-apply" onclick="applyProject(${p.project_id}, this)">
+                Apply Now
+              </button>
+            </div>
+          </div>
+        `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        /* ================== OPEN MILESTONES ================== */
+        function openMilestones(projectId) {
+            fetch(`/student/projects/${projectId}/milestones`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) return;
+
+                    modalBody.innerHTML = data.milestones.map((m, i) => `
+            <div class="milestone-item">
+              <div>
+                <div style="font-size:0.8rem;opacity:0.6;">Phase ${i + 1}</div>
+                <div class="ms-title">${m.title}</div>
+              </div>
+              <div class="ms-price">₹${Number(m.price).toLocaleString("en-IN")}</div>
+            </div>
+          `).join("");
+
+                    modal.classList.add("active");
+                });
+        }
+
+        /* ================== CLOSE MODAL ================== */
+        function closeModal() {
+            modal.classList.remove("active");
+        }
+
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        /* ================== APPLY PROJECT ================== */
+        function applyProject(projectId, btn) {
+                fetch("/student/projects/apply", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        login_id: STUDENT_LOGIN_ID,
+                        project_id: projectId
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.success) {
+                            showToast("Already applied or error");
+                            return;
+                        }
+
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Applied';
+                        btn.classList.add("applied");
+                        btn.disabled = true;
+
+                        showToast("Application submitted successfully!");
+                    });
+            }
+
+
+        /* ================== TOAST ================== */
+        function showToast(msg) {
+            const toast = document.createElement("div");
+            toast.className = "toast";
+            toast.innerText = msg;
+            document.getElementById("toast-container").appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+
+    </body>
+
+</html>

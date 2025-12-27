@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Report a Problem - Simplify</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-light: #f0f4ff;
+                --sub-text-color: #e2e8f0;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                --border-radius: 20px;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 8rem 1rem 2rem 1rem;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                box-sizing: border-box;
+                position: relative;
+                overflow-x: hidden;
+            }
+
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            /* Navbar */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.8rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 90%;
+                box-sizing: border-box;
+                position: fixed;
+                top: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 100;
+                transition: all 0.3s ease;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1rem;
+                position: relative;
+                padding-bottom: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1rem;
+                transition: color 0.3s ease;
+            }
+
+            .menu-toggle {
+                display: none;
+                background: none;
+                border: none;
+                color: var(--white);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            /* Report Form Container */
+            .report-container {
+                width: 100%;
+                max-width: 800px;
+                position: relative;
+                z-index: 5;
+            }
+
+            .glass-box {
+                background: var(--glass-bg);
+                border-radius: var(--border-radius);
+                padding: 2.5rem;
+                box-shadow: var(--card-shadow);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .glass-box h1 {
+                text-align: center;
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+                font-size: 30px;
+                font-weight: 700;
+            }
+
+            .glass-box p {
+                text-align: center;
+                opacity: 0.9;
+                margin-bottom: 2rem;
+                color: var(--text-light);
+                font-size: 1.1rem;
+            }
+
+            .report-form {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .form-group label {
+                font-weight: 500;
+                font-size: 1rem;
+                margin-left: 5px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 1rem;
+                border-radius: 15px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--white);
+                font-family: 'Poppins', sans-serif;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+            }
+
+            .form-group select {
+                appearance: none;
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 1rem center;
+                background-size: 1em;
+                padding-right: 2.5rem;
+            }
+
+            .form-group input::placeholder,
+            .form-group textarea::placeholder {
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            .form-group input:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                outline: none;
+                border-color: var(--white);
+                background: rgba(255, 255, 255, 0.2);
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            }
+
+            .form-group select option {
+                background: #1e3a8a;
+                color: white;
+            }
+
+            .submit-button {
+                padding: 1rem;
+                border-radius: 50px;
+                border: none;
+                background: var(--white);
+                color: var(--primary-blue);
+                font-size: 1.1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin-top: 1rem;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .submit-button:hover {
+                background: var(--dark-blue);
+                color: var(--white);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Status message */
+            #statusMsg {
+                margin-top: 1rem;
+                text-align: center;
+                font-size: 0.95rem;
+            }
+
+            @media (max-width: 900px) {
+            
+                .menu-toggle {
+                    display: block;
+                }
+            }
+               
+ /* Navbar */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 90%;
+                box-sizing: border-box;
+                position: fixed;
+                top: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 100;
+                transition: all 0.3s ease;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1rem;
+                position: relative;
+                padding-bottom: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1rem;
+                transition: color 0.3s ease;
+            }
+             .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+
+        <nav class="navbar">
+            <div class="logo-container">
+                <a href="projectselect.html">
+                  <h3>Simplify</h3>
+                </a>
+            </div>
+        <ul class="nav-links">
+            <li><a href="projectuploadingorg.html">Project Upload</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="report.html">Report</a></li>
+        </ul>
+            <div class="nav-icons">
+                <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+            </div>
+            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+        </nav>
+
+
+
+        <div class="report-container">
+            <div class="glass-box">
+                <h1>Report a Problem</h1>
+                <p>If you've encountered an issue or have a concern, please let us know. We'll review your report as
+                    soon as possible.</p>
+                <form class="report-form" id="reportForm">
+                    <div class="form-group">
+                        <label for="user-name">Your Name</label>
+                        <input type="text" id="user-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-email">Your Email</label>
+                        <input type="email" id="user-email" placeholder="Enter your registered email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="issue-category">Category of Issue</label>
+                        <select id="issue-category" required>
+                            <option value="" disabled selected>Select a category...</option>
+                            <option value="Bug/Glitch">Bug / Glitch</option>
+                            <option value="Payment Issue">Payment Issue</option>
+                            <option value="User Complaint">Complaint About a User</option>
+                            <option value="Feature Request">Feature Request</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Detailed Description</label>
+                        <textarea id="description" rows="5" placeholder="Please describe the issue in detail..."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Submit Report</button>
+                </form>
+                <p id="statusMsg"></p>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            // Particles
+            particlesJS("particles-js", {
+                particles: { number: { value: 60 }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.2, width: 1 }, move: { enable: true, speed: 2 } },
+                interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" } }, retina_detect: true }
+            });
+
+            // Mobile Menu Toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                const icon = menuToggle.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-xmark');
+                }
+            });
+
+            // Handle form submission (send data to backend with fetch)
+            const form = document.getElementById("reportForm");
+            const statusMsg = document.getElementById("statusMsg");
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const userName = document.getElementById('user-name').value;
+                const userEmail = document.getElementById('user-email').value;
+                const category = document.getElementById('issue-category').value;
+                const description = document.getElementById('description').value;
+
+                statusMsg.textContent = "Sending your report...";
+
+                try {
+                    const res = await fetch("http://localhost:3000/organization/report", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            name: userName,
+                            email: userEmail,
+                            category: category,
+                            description: description
+                        }),
+                    });
+
+                    const json = await res.json();
+
+                    if (res.ok) {
+                        statusMsg.textContent = json.message || "✅ Your report has been sent to the admin.";
+                        form.reset();
+                    } else {
+                        statusMsg.textContent = json.error || "❌ Something went wrong. Please try again.";
+                    }
+                } catch (err) {
+                    console.error(err);
+                    statusMsg.textContent = "❌ Network error. Please check your connection.";
+                }
+            });
+        </script>
+    </body>
+
+</html>

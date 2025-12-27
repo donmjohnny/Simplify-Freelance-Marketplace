@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Trial Projects Showcase</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-light: #f0f4ff;
+                --sub-text-color: #e2e8f0;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                --card-hover-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+                --border-radius: 20px;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 8rem 1rem 2rem 1rem;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                line-height: 1.6;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                box-sizing: border-box;
+            }
+
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            /* --- Navbar --- */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.8rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 90%;
+                box-sizing: border-box;
+                position: fixed;
+                top: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 100;
+                transition: all 0.3s ease;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+     .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                /* Required for the underline pseudo-element */
+                padding-bottom: 5px;
+                /* Creates space for the underline */
+            }
+
+            /* Animated underline pseudo-element */
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover {
+                color: var(--text-light);
+                /* Lighten text on hover for better effect */
+            }
+
+            /* The animation trigger */
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1rem;
+                transition: color 0.3s ease;
+            }
+
+            .nav-icons a:hover {
+                color: var(--text-light);
+            }
+
+            .nav-icons {
+                display: flex;
+                align-items: center;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1.5rem;
+            }
+
+            .menu-toggle {
+                display: none;
+                background: none;
+                border: none;
+                color: var(--white);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            /* --- Main Content --- */
+            .glass-box {
+                width: 100%;
+                max-width: 1200px;
+                box-sizing: border-box;
+                padding: 2.5rem;
+                background: var(--glass-bg);
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                backdrop-filter: blur(12px);
+                margin: 0 auto;
+                position: relative;
+                z-index: 5;
+            }
+
+            header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            header h1 {
+                font-size: 30px;
+                margin-bottom: 0.5rem;
+            }
+
+            header p {
+                font-size: 1.1rem;
+                opacity: 0.9;
+                max-width: 700px;
+                margin: 0 auto;
+            }
+
+            .controls-container {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+
+            #search-bar {
+                flex-grow: 0.50;
+                padding: 1rem 1rem;
+                border-radius: 50px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--white);
+                font-size: 1rem;
+                outline: none;
+                margin-left: 300px;
+                margin-top: 20px;
+            }
+
+            #search-bar::placeholder {
+                color: var(--sub-text-color);
+            }
+
+            .sort-button {
+                padding: 1rem 1.5rem;
+                border-radius: 50px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.15);
+                color: var(--white);
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+
+            /* Projects Display */
+            #projects-list {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .project-card {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: var(--border-radius);
+                padding: 2rem;
+                box-shadow: var(--card-shadow);
+                transition: transform 0.3s ease;
+            }
+
+            .project-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .project-title-section {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1rem;
+            }
+
+            .project-title-section h3 {
+                margin: 0;
+                font-size: 1.5rem;
+            }
+
+            .details-button {
+                background: rgba(255, 255, 255, 0.15);
+                border-radius: 50px;
+                color: var(--white);
+                padding: 0.6rem 1.5rem;
+                font-weight: 600;
+                cursor: pointer;
+                border: none;
+                transition: all 0.3s ease;
+            }
+
+            .details-button:hover {
+                background: var(--white);
+                color: var(--primary-blue);
+            }
+
+            .project-details-section {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease-out;
+            }
+
+            .project-details-section.active {
+                max-height: 500px;
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .project-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+                font-size: 0.85rem;
+                margin-top: 1rem;
+            }
+
+            .project-meta-item {
+                background-color: rgba(255, 255, 255, 0.1);
+                padding: 0.5rem 1rem;
+                border-radius: 50px;
+            }
+
+            .popup {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                backdrop-filter: blur(5px);
+            }
+
+            .popup.active {
+                display: flex;
+            }
+
+            .popup-content {
+                background: var(--glass-bg);
+                padding: 2.5rem;
+                border-radius: var(--border-radius);
+                text-align: center;
+                max-width: 500px;
+                width: 90%;
+            }
+
+            .popup-content h3 {
+                margin-top: 0;
+            }
+
+            .sort-options {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.75rem;
+                margin: 1.5rem 0;
+            }
+
+            .sort-options button {
+                padding: 10px 15px;
+                border: none;
+                border-radius: 50px;
+                background-color: rgba(255, 255, 255, 0.15);
+                color: white;
+                cursor: pointer;
+            }
+
+            .popup-content .close-button {
+                background-color: var(--white);
+                color: var(--primary-blue);
+                padding: 0.75rem 2rem;
+                border-radius: 50px;
+                font-weight: 600;
+                cursor: pointer;
+                border: none;
+            }
+
+            @media (max-width: 900px) {
+                .navbar {
+                    flex-wrap: wrap;
+                    width: 95%;
+                }
+
+                .nav-links {
+                    position: absolute;
+                    top: calc(100% + 10px);
+                    left: 0;
+                    width: 100%;
+                    background: rgba(0, 0, 0, 0.4);
+                    backdrop-filter: blur(15px);
+                    flex-direction: column;
+                    display: none;
+                    padding: 1.5rem 0;
+                    border-radius: 20px;
+                }
+
+                .nav-links.active {
+                    display: flex;
+                }
+
+                .nav-links li {
+                    margin: 0.75rem 0;
+                }
+
+                .nav-icons {
+                    display: none;
+                }
+
+                .menu-toggle {
+                    display: block;
+                }
+            }
+                .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+
+        <nav class="navbar">
+            <div class="logo-container">
+                <a href="studenthome.html">
+                    <h3>Simplify</h3>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="coursefront.html">Courses</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="trialproject.html">Trial Projects</a></li>
+                <li><a href="projectselect.html">Project Display</a></li>
+                <li><a href="report.html">Report</a></li>
+            </ul>
+            <div class="nav-icons">
+              
+                <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+            </div>
+            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+        </nav>
+
+        <div class="glass-box">
+            <header>
+                <h1>Skill Up Showcase</h1>
+                <p>Dive into these hands-on trial projects designed to hone your skills and build a powerful portfolio
+                    before tackling real-world freelance gigs.</p>
+            </header>
+
+            <div class="controls-container">
+                <input type="text" id="search-bar" placeholder="Search projects...">
+                <button class="sort-button" id="open-sort-popup">Sort</button>
+            </div>
+
+            <section id="projects-list"></section>
+        </div>
+
+        <div class="popup" id="sort-popup">
+            <div class="popup-content">
+                <h3>Sort by Language</h3>
+                <div class="sort-options">
+                    <button onclick="sortProjectsByLanguage('All')">All</button>
+                    <button onclick="sortProjectsByLanguage('HTML')">HTML</button>
+                    <button onclick="sortProjectsByLanguage('CSS')">CSS</button>
+                    <button onclick="sortProjectsByLanguage('JavaScript')">JavaScript</button>
+                    <button onclick="sortProjectsByLanguage('Scratch')">Scratch</button>
+                    <button onclick="sortProjectsByLanguage('Node.js')">Node.js</button>
+                </div>
+                <button class="close-button" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <!-- ✅ Correct script tag (was <sript> before) -->
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Particles.js setup (guarded in case library fails)
+                if (window.particlesJS) {
+                    particlesJS("particles-js", {
+                        particles: {
+                            number: { value: 60 },
+                            color: { value: "#ffffff" },
+                            shape: { type: "circle" },
+                            opacity: { value: 0.5, random: true },
+                            size: { value: 3, random: true },
+                            line_linked: {
+                                enable: true,
+                                distance: 150,
+                                color: "#ffffff",
+                                opacity: 0.2
+                            },
+                            move: { enable: true, speed: 2, direction: "none", out_mode: "out" }
+                        },
+                        interactivity: {
+                            detect_on: "canvas",
+                            events: {
+                                onhover: { enable: true, mode: "repulse" },
+                                onclick: { enable: true, mode: "push" }
+                            }
+                        },
+                        retina_detect: true
+                    });
+                }
+
+                // Mobile menu toggle
+                const menuToggle = document.querySelector('.menu-toggle');
+                const navLinks = document.querySelector('.nav-links');
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                });
+
+                const projectsList = document.getElementById('projects-list');
+                const searchBar = document.getElementById('search-bar');
+                const sortPopupButton = document.getElementById('open-sort-popup');
+                const sortPopup = document.getElementById('sort-popup');
+
+                let allProjects = [];
+
+                function mapDbProjectToFrontEnd(p) {
+                    const languages = p.skills_required
+                        ? p.skills_required.split(',').map(s => s.trim()).filter(Boolean)
+                        : [];
+
+                    return {
+                        title: p.title,
+                        details: p.short_description,
+                        category: p.domain || 'Not specified',
+                        languages,
+                        organization: 'Trial Project',
+                        difficulty: p.difficulty || 'Not specified',
+                        estimated_hours: p.estimated_hours,
+                        budget_range: p.budget_range || 'Unpaid trial'
+                    };
+                }
+
+                async function loadProjects() {
+                    try {
+                        const res = await fetch('/student/trial-projects');
+                        if (!res.ok) {
+                            throw new Error('Failed to load projects');
+                        }
+                        const data = await res.json();
+
+                        if (!data.success || !Array.isArray(data.projects)) {
+                            throw new Error('Invalid response format');
+                        }
+
+                        allProjects = data.projects.map(mapDbProjectToFrontEnd);
+                        renderProjects(allProjects);
+                    } catch (err) {
+                        console.error('Error loading projects:', err);
+                        projectsList.innerHTML = `
+                        <p style="text-align: center; color: var(--sub-text-color);">
+                            Unable to load projects right now. Please try again later.
+                        </p>
+                    `;
+                    }
+                }
+
+                function renderProjects(projects) {
+                    projectsList.innerHTML = '';
+
+                    if (!projects || projects.length === 0) {
+                        projectsList.innerHTML = `
+                        <p style="text-align: center; color: var(--sub-text-color);">
+                            No matching projects found.
+                        </p>
+                    `;
+                        return;
+                    }
+
+                    projects.forEach((project) => {
+                        const projectCard = document.createElement('div');
+                        projectCard.className = 'project-card';
+
+                        const languagesDisplay =
+                            (project.languages && project.languages.join(', ')) || 'Not specified';
+                        const categoryDisplay = project.category || 'Not specified';
+
+                        projectCard.innerHTML = `
+                        <div class="project-title-section">
+                            <h3>${project.title}</h3>
+                            <button class="details-button">Details</button>
+                        </div>
+                        <div class="project-meta-item">
+                            <strong>Organization:</strong> ${project.organization}
+                        </div>
+                        <div class="project-details-section">
+                            <p>${project.details}</p>
+                            <div class="project-meta">
+                                <span class="project-meta-item">
+                                    <strong>Category:</strong> ${categoryDisplay}
+                                </span>
+                                <span class="project-meta-item">
+                                    <strong>Languages / Skills:</strong> ${languagesDisplay}
+                                </span>
+                                <span class="project-meta-item">
+                                    <strong>Difficulty:</strong> ${project.difficulty}
+                                </span>
+                                ${project.estimated_hours
+                                ? `<span class="project-meta-item"><strong>Hours:</strong> ${project.estimated_hours}</span>`
+                                : ''
+                            }
+                                <span class="project-meta-item">
+                                    <strong>Budget:</strong> ${project.budget_range}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+
+                        projectsList.appendChild(projectCard);
+
+                        const button = projectCard.querySelector('.details-button');
+                        const detailsSection = projectCard.querySelector('.project-details-section');
+
+                        button.addEventListener('click', () => {
+                            detailsSection.classList.toggle('active');
+                            button.textContent = detailsSection.classList.contains('active')
+                                ? 'Hide'
+                                : 'Details';
+                        });
+                    });
+                }
+
+                function handleSearch() {
+                    const searchTerm = searchBar.value.toLowerCase();
+
+                    const filteredProjects = allProjects.filter((project) => {
+                        const searchProps = [
+                            project.title,
+                            project.details,
+                            project.organization,
+                            project.category,
+                            project.difficulty,
+                            project.languages ? project.languages.join(' ') : ''
+                        ];
+                        return searchProps.some(
+                            (prop) => prop && prop.toLowerCase().includes(searchTerm)
+                        );
+                    });
+
+                    renderProjects(filteredProjects);
+                }
+
+                sortPopupButton.addEventListener('click', () =>
+                    sortPopup.classList.add('active')
+                );
+
+                window.closePopup = () => sortPopup.classList.remove('active');
+
+                window.sortProjectsByLanguage = (language) => {
+                    let filtered;
+                    if (language === 'All') {
+                        filtered = allProjects;
+                    } else {
+                        filtered = allProjects.filter(
+                            (project) =>
+                                project.languages &&
+                                project.languages.some(
+                                    (lang) => lang.toLowerCase() === language.toLowerCase()
+                                )
+                        );
+                    }
+                    renderProjects(filtered);
+                    closePopup();
+                };
+
+                searchBar.addEventListener('input', handleSearch);
+
+                // Initial load
+                loadProjects();
+            });
+        </script>
+
+    </body>
+
+</html>

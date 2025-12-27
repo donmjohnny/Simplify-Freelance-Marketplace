@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Data Analytics Courses</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-light: #f0f4ff;
+                --sub-text-color: #e2e8f0;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                --card-hover-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+                --border-radius: 20px;
+            }
+             .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 1rem;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                overflow-x: hidden;
+                min-height: 100vh;
+            }
+
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 2rem;
+                background: var(--glass-bg);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 1rem auto;
+                backdrop-filter: blur(12px);
+                position: relative;
+                z-index: 10;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover {
+                color: var(--text-light);
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1rem;
+                transition: color 0.3s ease;
+            }
+
+            .nav-icons a:hover {
+                color: var(--text-light);
+            }
+
+            .glass-box {
+                width: 100%;
+                max-width: 1200px;
+                box-sizing: border-box;
+                padding: 2.5rem;
+                background: var(--glass-bg);
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                backdrop-filter: blur(12px);
+                margin-bottom: 2rem;
+                position: relative;
+                z-index: 5;
+            }
+
+            .section-header {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+
+            .section-title {
+                font-size: 30px;
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+                font-weight: 700;
+            }
+
+            .section-description {
+                font-size: 1.1rem;
+                opacity: 0.8;
+                max-width: 700px;
+                margin: 0 auto;
+                color: var(--sub-text-color);
+            }
+
+            .controls-container {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                width: 100%;
+                max-width: 900px;
+                margin: 0 auto 3rem;
+            }
+
+            .search-box {
+                flex-grow: 1;
+            }
+
+            #searchInput {
+                width: 100%;
+                padding: 1rem 1.5rem;
+                box-sizing: border-box;
+                border-radius: 50px;
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--white);
+                font-size: 1rem;
+                outline: none;
+            }
+
+            #searchInput::placeholder {
+                color: var(--sub-text-color);
+            }
+
+            .sort-button {
+                padding: 1rem 1.5rem;
+                border-radius: 50px;
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.15);
+                color: var(--white);
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+            .courses-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 2rem;
+            }
+
+            .course-card {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: var(--border-radius);
+                padding: 2rem;
+                transition: transform 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                animation: fadeIn 0.8s ease-out forwards;
+            }
+
+            .course-card:hover {
+                transform: translateY(-10px);
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .course-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-top: 0;
+                flex-grow: 1;
+            }
+
+            .course-description {
+                font-size: 0.95rem;
+                color: var(--sub-text-color);
+                margin-bottom: 1rem;
+            }
+
+            .course-details {
+                font-size: 0.85rem;
+                margin-top: auto;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .course-button {
+                display: inline-block;
+                align-self: flex-start;
+                margin-top: 1.5rem;
+                background: rgba(255, 255, 255, 0.15);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50px;
+                color: var(--white);
+                padding: 0.6rem 1.5rem;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+            .course-button:hover {
+                background: var(--white);
+                color: var(--primary-blue);
+            }
+
+            .no-results {
+                display: none;
+                text-align: center;
+                margin-top: 2rem;
+                color: var(--sub-text-color);
+            }
+
+            .loading-text {
+                text-align: center;
+                margin-top: 1rem;
+                color: var(--sub-text-color);
+                font-size: 0.95rem;
+            }
+
+            .popup {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .popup.active {
+                display: flex;
+            }
+
+            .popup-content {
+                background: var(--glass-bg);
+                padding: 2.5rem;
+                border-radius: var(--border-radius);
+                text-align: center;
+                width: 90%;
+                max-width: 500px;
+                box-shadow: var(--card-shadow);
+            }
+
+            .popup-content h3 {
+                margin-top: 0;
+            }
+
+            .sort-options-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .sort-options-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.75rem;
+            }
+
+            .sort-options-buttons button {
+                padding: 10px 15px;
+                border: none;
+                border-radius: 50px;
+                background-color: rgba(255, 255, 255, 0.15);
+                color: white;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .sort-options-buttons button:hover {
+                background-color: var(--white);
+                color: var(--primary-blue);
+            }
+
+            .popup-content .close-button {
+                background-color: var(--white);
+                color: var(--primary-blue);
+                padding: 0.75rem 2rem;
+                border: none;
+                border-radius: 50px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            @media (max-width: 992px) {
+                .nav-links {
+                    display: none;
+                }
+            }
+
+            @media (max-width: 600px) {
+                .controls-container {
+                    flex-direction: column;
+                }
+
+                .sort-button {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+
+        <nav class="navbar">
+            <div class="logo-container">
+            <a href="studenthome.html">
+                <h3>Simplify</h3>
+            </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="coursefront.html">Courses</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="trialproject.html">Trial Projects</a></li>
+                <li><a href="projectselect.html">Project Display</a></li>
+                <li><a href="report.html">Report</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+            </div>
+        </nav>
+
+        <div class="glass-box">
+            <section class="section-header">
+                <h1 class="section-title">Data Analytics Courses</h1>
+                <p class="section-description">
+                    These courses are crafted to transform you into a skilled problem-solver who can uncover patterns,
+                    visualize insights, and tell compelling stories with data.
+                </p>
+            </section>
+
+            <div class="controls-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search courses...">
+                </div>
+                <button class="sort-button" id="openSortPopup">Sort & Filter</button>
+            </div>
+
+            <section class="courses-section">
+                <div class="courses-grid" id="coursesGrid">
+                    <!-- Dynamic course cards go here -->
+                </div>
+                <p class="loading-text" id="loadingText">Loading courses...</p>
+                <p class="no-results" id="noResults">No courses found. Try another search or filter.</p>
+            </section>
+        </div>
+
+        <div class="popup" id="sortPopup">
+            <div class="popup-content">
+                <h3>Sort and Filter Courses</h3>
+                <div class="sort-options-group">
+                    <h4>Organization</h4>
+                    <div class="sort-options-buttons">
+                        <button onclick="sortCourses('org', '')">All</button>
+                        <!-- org filters use lowercase names to match dataset.org -->
+                        <button onclick="sortCourses('org', 'harvard university')">Harvard</button>
+                        <button onclick="sortCourses('org', 'ibm skillbuild')">IBM</button>
+                        <button onclick="sortCourses('org', 'great learning')">Great Learning</button>
+                        <button onclick="sortCourses('org', 'google')">Google</button>
+                        <button onclick="sortCourses('org', 'microsoft')">Microsoft</button>
+                    </div>
+                </div>
+                <div class="sort-options-group">
+                    <h4>Level</h4>
+                    <div class="sort-options-buttons">
+                        <button onclick="sortCourses('level', '')">All</button>
+                        <button onclick="sortCourses('level', 'Beginner')">Beginner</button>
+                        <button onclick="sortCourses('level', 'Intermediate')">Intermediate</button>
+                    </div>
+                </div>
+                <button class="close-button" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            // Particles background
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 60, density: { enable: true, value_area: 800 } },
+                    color: { value: "#ffffff" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#ffffff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        out_mode: "out"
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    },
+                    modes: {
+                        repulse: { distance: 100 },
+                        push: { particles_nb: 4 }
+                    }
+                },
+                retina_detect: true
+            });
+
+            const searchInput = document.getElementById("searchInput");
+            const coursesGrid = document.getElementById("coursesGrid");
+            const noResults = document.getElementById("noResults");
+            const loadingText = document.getElementById("loadingText");
+            const openSortPopupButton = document.getElementById("openSortPopup");
+            const sortPopup = document.getElementById("sortPopup");
+
+            let currentOrgFilter = "";
+            let currentLevelFilter = "";
+
+            // --------- Load Data Analytics Courses from backend ---------
+            async function loadDataAnalyticsCourses() {
+                try {
+                    const res = await fetch("/student/data-analytics-courses");
+                    if (!res.ok) throw new Error("Network error");
+
+                    const data = await res.json();
+                    loadingText.style.display = "none";
+
+                    if (!data.success || !Array.isArray(data.courses) || data.courses.length === 0) {
+                        noResults.style.display = "block";
+                        return;
+                    }
+
+                    renderCourseCards(data.courses);
+                    filterCourses(); // initial filter (with empty filters)
+                } catch (err) {
+                    console.error("Error loading data analytics courses:", err);
+                    loadingText.textContent = "Failed to load courses. Please try again later.";
+                }
+            }
+
+            function renderCourseCards(courses) {
+                coursesGrid.innerHTML = "";
+
+                courses.forEach(course => {
+                    const card = document.createElement("div");
+                    card.classList.add("course-card");
+
+                    // dataset for filters
+                    const orgSlug = (course.organization || "").toLowerCase();
+                    card.dataset.org = orgSlug;
+                    card.dataset.level = course.level || "";
+
+                    const titleEl = document.createElement("h3");
+                    titleEl.classList.add("course-title");
+                    titleEl.textContent = course.title;
+
+                    const descEl = document.createElement("p");
+                    descEl.classList.add("course-description");
+                    descEl.textContent = course.short_description;
+
+                    const detailsEl = document.createElement("strong");
+                    detailsEl.classList.add("course-details");
+                    detailsEl.innerHTML =
+                        `Organization: ${course.organization || "N/A"}<br>
+           Duration: ${course.duration || "N/A"}<br>
+           Level: ${course.level || "N/A"}`;
+
+                    const buttonEl = document.createElement("a");
+                    buttonEl.classList.add("course-button");
+                    buttonEl.textContent = "Official Website";
+                    buttonEl.href = course.external_url || "#";
+                    buttonEl.target = "_blank";
+                    buttonEl.rel = "noopener noreferrer";
+
+                    card.appendChild(titleEl);
+                    card.appendChild(descEl);
+                    card.appendChild(detailsEl);
+                    card.appendChild(buttonEl);
+
+                    coursesGrid.appendChild(card);
+                });
+            }
+
+            // --------- Search + Filter ---------
+            function filterCourses() {
+                const query = searchInput.value.toLowerCase();
+                const cards = document.querySelectorAll(".course-card");
+                let visibleCount = 0;
+
+                cards.forEach(card => {
+                    const title = card.querySelector(".course-title").textContent.toLowerCase();
+                    const desc = card.querySelector(".course-description").textContent.toLowerCase();
+                    const cardOrg = card.dataset.org; // already lowercase
+                    const cardLevel = card.dataset.level;
+
+                    const matchesSearch = title.includes(query) || desc.includes(query);
+                    const matchesOrg = !currentOrgFilter || cardOrg === currentOrgFilter;
+                    const matchesLevel = !currentLevelFilter || cardLevel === currentLevelFilter;
+
+                    if (matchesSearch && matchesOrg && matchesLevel) {
+                        card.style.display = "flex";
+                        visibleCount++;
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+
+                noResults.style.display = visibleCount === 0 ? "block" : "none";
+            }
+
+            function sortCourses(type, value) {
+                if (type === "org") currentOrgFilter = value;    // org filters use lowercase names
+                if (type === "level") currentLevelFilter = value;
+                filterCourses();
+                closePopup();
+            }
+
+            function openPopup() {
+                sortPopup.classList.add("active");
+            }
+
+            function closePopup() {
+                sortPopup.classList.remove("active");
+            }
+
+            openSortPopupButton.addEventListener("click", openPopup);
+            searchInput.addEventListener("keyup", filterCourses);
+
+            window.sortCourses = sortCourses;
+            window.closePopup = closePopup;
+            window.openPopup = openPopup;
+
+            // Load data on page load
+            loadDataAnalyticsCourses();
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin - Manage AI/ML Courses</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #ffffff;
+                --text-light: #f0f4ff;
+                --sub-text-color: #e2e8f0;
+                --glass-bg: rgba(255, 255, 255, 0.15);
+                --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                --border-radius: 20px;
+                --danger-red: #ef4444;
+                --success-green: #10b981;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                height: 100vh;
+                overflow: hidden;
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                color: var(--white);
+            }
+
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            /* --- Navbar --- */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 90%;
+                position: fixed;
+                top: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 100;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+            }
+
+            /* --- Admin Grid Layout --- */
+            .admin-container {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 2rem;
+                max-width: 1400px;
+                height: calc(100vh - 140px);
+                margin: 110px auto 0 auto;
+                padding: 0 2rem 2rem 2rem;
+                position: relative;
+                z-index: 5;
+                box-sizing: border-box;
+            }
+
+            .glass-panel {
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                padding: 2rem;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                height: 100%;
+                overflow-y: auto;
+                box-sizing: border-box;
+            }
+
+            /* Custom Scrollbar */
+            .glass-panel::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .glass-panel::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+            }
+
+            .glass-panel::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 10px;
+            }
+
+            .glass-panel::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.5);
+            }
+
+            /* --- Updated List Header (Curved Box) --- */
+            .list-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 2rem;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+
+                /* New Curved Box Styling */
+                background: rgba(255, 255, 255, 0.1);
+                /* Slight background */
+                backdrop-filter: blur(15px);
+                padding: 1rem 1.5rem;
+                /* Add padding inside */
+                border-radius: 25px;
+                /* Make it curvy */
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-bar {
+                padding: 0.8rem 1.5rem;
+                border-radius: 50px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.15);
+                color: var(--white);
+                outline: none;
+                width: 200px;
+                transition: width 0.3s ease;
+            }
+
+            .search-bar:focus {
+                width: 250px;
+                /* Expands on focus */
+                background: rgba(255, 255, 255, 0.25);
+            }
+
+            .courses-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .course-card {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 15px;
+                padding: 1.5rem;
+                position: relative;
+                transition: transform 0.2s ease;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .course-card:hover {
+                transform: translateY(-5px);
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .course-header-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .delete-btn {
+                background: rgba(239, 68, 68, 0.2);
+                color: #ffcccc;
+                border: 1px solid var(--danger-red);
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+
+            .delete-btn:hover {
+                background: var(--danger-red);
+                color: white;
+            }
+
+            /* --- Form Styles --- */
+            .admin-form {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .admin-form input,
+            .admin-form textarea,
+            .admin-form select {
+                width: 100%;
+                padding: 0.8rem;
+                border-radius: 10px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--white);
+                box-sizing: border-box;
+            }
+
+            .admin-form select option {
+                background: var(--dark-blue);
+            }
+
+            .submit-btn {
+                padding: 0.9rem;
+                border: none;
+                border-radius: 50px;
+                background: var(--white);
+                color: var(--primary-blue);
+                font-weight: 600;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            .submit-btn:hover {
+                background: var(--dark-blue);
+                color: var(--white);
+            }
+
+            /* --- Toast --- */
+            #toast-container {
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .toast {
+                min-width: 250px;
+                background: rgba(255, 255, 255, 0.95);
+                color: #333;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideInLeft 0.5s ease forwards;
+                border-left: 5px solid;
+            }
+
+            .toast.success {
+                border-left-color: var(--success-green);
+            }
+
+            .toast.error {
+                border-left-color: var(--danger-red);
+            }
+
+            .toast.hiding {
+                animation: fadeOut 0.5s ease forwards;
+            }
+
+            @keyframes slideInLeft {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+            }
+
+            /* Mobile Responsive */
+            @media (max-width: 900px) {
+                body {
+                    height: auto;
+                    overflow: auto;
+                }
+
+                .admin-container {
+                    flex-direction: column;
+                    height: auto;
+                    margin-top: 100px;
+                    display: flex;
+                }
+
+                .glass-panel {
+                    height: auto;
+                    min-height: 400px;
+                }
+
+                .navbar {
+                    flex-wrap: wrap;
+                }
+
+                .nav-links {
+                    display: none;
+                }
+
+                .list-header {
+                    flex-direction: column;
+                    gap: 10px;
+                    align-items: stretch;
+                    text-align: center;
+                }
+
+                .search-bar {
+                    width: 100%;
+                }
+            }
+             .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+
+        <div id="toast-container"></div>
+
+        <nav class="navbar">
+            <div class="logo-container">
+                <a href="adminhome.html">
+                    <h3>Simplify</h3>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="coursefront.html">Courses</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="trialproject.html">Trial Projects</a></li>
+        
+            </ul>
+            <div class="nav-links">
+            </div>
+        </nav>
+
+        <div class="admin-container">
+
+            <section class="glass-panel">
+                <div class="list-header">
+                    <h2 style="margin: 0;">Data Science</h2>
+                    <input type="text" id="searchInput" class="search-bar" placeholder="Filter courses...">
+                </div>
+                <div id="loader" style="text-align: center; display: none;">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                </div>
+
+                <div class="courses-grid" id="coursesGrid">
+                </div>
+            </section>
+
+            <section class="glass-panel">
+                <h2 style="margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 1rem;">Add New
+                    Course</h2>
+                <form id="addCourseForm" class="admin-form">
+                    <label>Course Title</label>
+                    <input type="text" id="courseTitle" required>
+
+                    <label>Description</label>
+                    <textarea id="courseDesc" rows="4" required></textarea>
+
+                    <label>Organization</label>
+                    <input type="text" id="courseOrg" required>
+
+                    <label>Duration</label>
+                    <input type="text" id="courseDuration" required>
+
+                    <label>Level</label>
+                    <select id="courseLevel">
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+
+                    <button type="submit" class="submit-btn">Publish Course</button>
+                </form>
+            </section>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            // Particles Init
+            particlesJS("particles-js", { particles: { number: { value: 60, }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.2 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } } });
+
+            // --- CONFIGURATION ---
+            // SET THIS TO FALSE when you have a real backend (PHP/Node/Python)
+            // SET THIS TO TRUE to test the UI immediately with fake data
+            const USE_MOCK_DATA = false;
+            const API_URL = "/admin/courses?category=data-science";
+
+
+            // Your Real API Endpoints (Change these)
+
+            // --- MOCK DATA (For Demo) ---
+            let mockCourses = [
+                { id: 1, title: "Intro to AI", desc: "Basics of Artificial Intelligence", org: "Stanford", duration: "4 Weeks", level: "Beginner" },
+                { id: 2, title: "Neural Networks", desc: "Deep learning fundamentals", org: "DeepMind", duration: "8 Weeks", level: "Advanced" }
+            ];
+
+            // --- TOAST NOTIFICATION SYSTEM ---
+            function showToast(message, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+
+                const icon = type === 'success' ? '<i class="fas fa-check-circle" style="color: green"></i>' : '<i class="fas fa-exclamation-circle" style="color: red"></i>';
+
+                toast.innerHTML = `${icon} <span>${message}</span>`;
+
+                container.appendChild(toast);
+
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    toast.classList.add('hiding');
+                    toast.addEventListener('animationend', () => toast.remove());
+                }, 3000);
+            }
+
+            // --- FETCH COURSES (READ) ---
+            async function fetchCourses() {
+                const grid = document.getElementById('coursesGrid');
+                const loader = document.getElementById('loader');
+
+                loader.style.display = 'block';
+                grid.innerHTML = '';
+
+                try {
+                    let courses = [];
+
+                    if (USE_MOCK_DATA) {
+                        await new Promise(r => setTimeout(r, 800));
+                        courses = mockCourses;
+                    } else {
+                        const response = await fetch(API_URL);
+                        if (!response.ok) throw new Error("Network error");
+
+                        const data = await response.json();
+                        if (!data.success) throw new Error("Backend error");
+
+                        courses = data.courses;
+                    }
+
+
+
+                    renderCourses(courses);
+
+                } catch (error) {
+                    console.error("FETCH ERROR:", error);
+                    showToast("Failed to load courses", "error");
+                } finally {
+                    loader.style.display = 'none';
+                }
+            }
+
+            // --- RENDER FUNCTION ---
+            function renderCourses(courses) {
+                const grid = document.getElementById('coursesGrid');
+                grid.innerHTML = '';
+
+                if (courses.length === 0) {
+                    grid.innerHTML = '<p style="text-align:center; opacity:0.7">No courses found.</p>';
+                    return;
+                }
+
+                courses.forEach(course => {
+                    const card = document.createElement('div');
+                    card.className = 'course-card';
+                    card.innerHTML = `
+                    <div class="course-header-row">
+                        <h3 style="margin:0">${course.title}</h3>
+                        <button class="delete-btn" onclick="deleteCourse(${course.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <p style="font-size:0.9rem; color: #e2e8f0; flex-grow: 1;">${course.desc}</p>
+                    <div style="font-size:0.8rem; background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:10px;">
+                        <strong>${course.org}</strong> • ${course.level} • ${course.duration}
+                    </div>
+                `;
+                    grid.appendChild(card);
+                });
+            }
+
+            // --- ADD COURSE (CREATE) ---
+            document.getElementById('addCourseForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const btn = this.querySelector('button');
+                const originalText = btn.innerText;
+                btn.innerText = "Saving...";
+                btn.disabled = true;
+
+                const newCourse = {
+                    title: document.getElementById('courseTitle').value,
+                    desc: document.getElementById('courseDesc').value,
+                    org: document.getElementById('courseOrg').value,
+                    duration: document.getElementById('courseDuration').value,
+                    level: document.getElementById('courseLevel').value
+                };
+
+                try {
+                    if (USE_MOCK_DATA) {
+                        // Simulate DB ID generation
+                        await new Promise(r => setTimeout(r, 600));
+                        newCourse.id = Date.now();
+                        mockCourses.unshift(newCourse);
+                    } else {
+                        // Real POST Request
+                        const response = await fetch("/admin/courses", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                title: newCourse.title,
+                                description: newCourse.desc,
+                                organization: newCourse.org,
+                                duration: newCourse.duration,
+                                level: newCourse.level,
+                                category: "data-science" // ✅ consistent
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        // 🔥 THIS IS THE IMPORTANT PART
+                        if (!data.success) {
+                            throw new Error(data.error || "Insert failed");
+                        }
+                    }
+
+                    // ✅ Show success ONLY after confirmed insert
+                    showToast("Course added successfully!", "success");
+                    this.reset();        // Clear form
+                    fetchCourses();      // Reload list
+
+                } catch (error) {
+                    console.error(error);
+                    showToast(error.message || "Error adding course.", "error");
+                } finally {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+
+            });
+
+            // --- DELETE COURSE (DELETE) ---
+            async function deleteCourse(id) {
+                if (!confirm("Are you sure you want to delete this course?")) return;
+
+                try {
+                    if (USE_MOCK_DATA) {
+                        await new Promise(r => setTimeout(r, 500));
+                        mockCourses = mockCourses.filter(c => c.id !== id);
+                    } else {
+                        // Real DELETE Request
+                        const response = await fetch(`/admin/courses/${id}`, {
+                            method: "DELETE"
+                        });
+
+                        if (!response.ok) throw new Error("Failed to delete");
+                    }
+
+                    showToast("Course deleted.", "success");
+                    fetchCourses(); // Reload list
+
+                } catch (error) {
+                    showToast("Could not delete course.", "error");
+                }
+            }
+
+            // --- SEARCH FILTER ---
+            document.getElementById('searchInput').addEventListener('keyup', function (e) {
+                const term = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.course-card');
+
+                cards.forEach(card => {
+                    const text = card.innerText.toLowerCase();
+                    card.style.display = text.includes(term) ? 'flex' : 'none';
+                });
+            });
+
+            // Initial Load
+            window.addEventListener('DOMContentLoaded', fetchCourses);
+
+        </script>
+    </body>
+
+</html>

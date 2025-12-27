@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>Profile</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+
+        <style>
+            :root {
+  --primary-blue: #3B82F6;
+  --dark-blue: #255AB4;
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --white: #ffffff;
+}
+
+/* ===== BASE ===== */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+  color: var(--white);
+  min-height: 100vh;
+}
+
+.container {
+  width: 95%;
+  max-width: 1100px;
+  margin: 3rem auto;
+}
+
+/* ===== PROFILE CARD ===== */
+.profile-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  padding: 2.2rem;
+  backdrop-filter: blur(14px);
+  margin-bottom: 2.5rem;
+  margin-top: 120px;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-header h2 {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 600;
+}
+
+.profile-header span {
+  background: rgba(255, 255, 255, 0.18);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+/* ===== INFO GRID ===== */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.info-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.info-item h4 {
+  margin: 0;
+  font-size: 0.75rem;
+  opacity: 0.75;
+  text-transform: uppercase;
+}
+
+.info-item p {
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* ===== PROJECTS SECTION ===== */
+.projects {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  padding: 2.2rem;
+  backdrop-filter: blur(14px);
+}
+
+.projects h3 {
+  margin: 0 0 1.6rem;
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 10px;
+}
+
+/* ===== PROJECT CARD ===== */
+.project-card {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: 1.6rem;
+  margin-bottom: 1.4rem;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+}
+
+.project-card h4 {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+}
+
+.project-card p {
+  margin: 6px 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* ===== BUTTONS ===== */
+.project-card button {
+  margin-top: 12px;
+  padding: 8px 18px;
+  border-radius: 22px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* View Milestones */
+.project-card button:first-of-type {
+  background: white;
+  color: var(--primary-blue);
+}
+
+.project-card button:first-of-type:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Delete */
+.project-card button:last-of-type {
+  background: #ff4d4d;
+  color: white;
+}
+
+.project-card button:last-of-type:hover {
+  background: #e84141;
+}
+
+/* ===== MILESTONES ===== */
+.project-card div[id^="ms-"] {
+  margin-top: 14px;
+  padding-left: 14px;
+  border-left: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+.project-card div[id^="ms-"] div {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  opacity: 0.9;
+}
+
+/* ===== EMPTY STATE ===== */
+#projects-list p {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-card {
+    padding: 1.3rem;
+  }
+}
+  .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 90%;
+                box-sizing: border-box;
+                position: fixed;
+                top: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 100;
+                transition: all 0.3s ease;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1rem;
+                position: relative;
+                padding-bottom: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1rem;
+                transition: color 0.3s ease;
+            }
+             .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        
+        <div class="container">
+          <nav class="navbar">
+            <div class="logo-container"><a href="projectselect.html">
+                <h3>Simplify</h3>
+              </a>
+            </div>
+            <ul class="nav-links">
+              <li><a href="projectuploadingorg.html">Project Upload</a></li>
+              <li><a href="dashboard.html">Dashboard</a></li>
+              <li><a href="report.html">Report</a></li>
+            </ul>
+            <div class="nav-icons">
+           
+            </div>
+          </nav>
+
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h2 id="name">Loading...</h2>
+                    <span id="role">Loading role...</span>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <h4>Email</h4>
+                        <p id="email">—</p>
+                    </div>
+
+                    <div class="info-item" id="college-box">
+                        <h4>College</h4>
+                        <p id="college">—</p>
+                    </div>
+
+                    <div class="info-item" id="skills-box">
+                        <h4>Skills</h4>
+                        <p id="skills">—</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="projects">
+                <h3 id="projects-title">Projects</h3>
+                <div id="projects-list"></div>
+            </div>
+
+        </div>
+
+        <script>
+           
+/* ================= AUTH ================= */
+                    const LOGIN_ID = localStorage.getItem("login_id");
+
+                    if (!LOGIN_ID) {
+                        alert("Login expired");
+                    location.href = "/login.html";
+}
+
+                    /* ================= LOAD PROFILE ================= */
+                    async function loadProfile() {
+  const meRes = await fetch("/auth/me", {
+                        headers: {"x-login-id": LOGIN_ID }
+  });
+
+                    const me = await meRes.json();
+
+                    if (!me || !me.role) {
+                        alert("Failed to load profile");
+                    return;
+  }
+
+                    document.getElementById("name").innerText = me.name;
+                    document.getElementById("email").innerText = me.email;
+                    document.getElementById("role").innerText =
+                    me.role === "organization" ? "Organization" : "Student";
+
+                    if (me.role === "organization") {
+                        document.getElementById("college-box").style.display = "none";
+                    document.getElementById("skills-box").style.display = "none";
+                    document.getElementById("projects-title").innerText = "My Projects";
+                    loadOrgProjects();
+  }
+}
+
+                    /* ================= LOAD ORG PROJECTS ================= */
+                    async function loadOrgProjects() {
+  const res = await fetch("/org/profile/projects", {
+                        headers: {"x-login-id": LOGIN_ID }
+  });
+
+                    const data = await res.json();
+                    renderOrgProjects(data.projects || []);
+}
+
+                    /* ================= RENDER ORG PROJECTS ================= */
+                    function renderOrgProjects(projects) {
+  const box = document.getElementById("projects-list");
+                    box.innerHTML = "";
+
+                    if (projects.length === 0) {
+                        box.innerHTML = "<p>No projects created</p>";
+                    return;
+  }
+
+  projects.forEach(p => {
+    const div = document.createElement("div");
+                    div.className = "project-card";
+
+                    div.innerHTML = `
+                    <h4>${p.project_name}</h4>
+                    <p>Total Value: ₹${p.total_value}</p>
+                    <button onclick="toggleMilestones(${p.id})">View Milestones</button>
+                    <button onclick="deleteProject(${p.id})" style="background:red;color:white">
+                        Delete Project
+                    </button>
+
+                    <div id="ms-${p.id}" style="display:none;margin-top:10px;">
+                        ${p.milestones.map(m => `
+          <div>• ${m.title} – ₹${m.price}</div>
+        `).join("")}
+                    </div>
+                    `;
+                    box.appendChild(div);
+  });
+}
+
+                    /* ================= TOGGLE MILESTONES ================= */
+                    function toggleMilestones(id) {
+  const el = document.getElementById("ms-" + id);
+                    el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+                    /* ================= DELETE PROJECT ================= */
+                    async function deleteProject(projectId) {
+  if (!confirm("Delete this project permanently?")) return;
+
+                    await fetch(`/org/projects/${projectId}`, {
+    method: "DELETE",
+    headers: { "x-login-id": LOGIN_ID }
+  });
+
+  loadOrgProjects();
+}
+
+loadProfile();
+            </script>
+
+        </script>
+
+    </body>
+
+</html>

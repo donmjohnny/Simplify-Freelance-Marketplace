@@ -1,0 +1,709 @@
+]<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Project Builder — Organization</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <style>
+            :root {
+                --primary-blue: #3B82F6;
+                --dark-blue: #255AB4;
+                --white: #fff;
+                --glass-bg: rgba(255, 255, 255, 0.12);
+                --border-color: rgba(255, 255, 255, 0.18);
+                --accent-green: #4cd137;
+                --accent-red: #ff4757;
+            }
+
+            * {
+                box-sizing: border-box
+            }
+
+            body {
+                margin: 0;
+                font-family: 'Poppins', sans-serif;
+                color: var(--white);
+                background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+                min-height: 100vh;
+                overflow: hidden;
+            }
+
+            #particles-js {
+                position: fixed;
+                inset: 0;
+                z-index: 0;
+                pointer-events: none
+            }
+
+            .navbar {
+                position: relative;
+                z-index: 20;
+                display: flex;
+                justify-content: space-between;
+                padding: 1rem 2rem;
+                background: var(--glass-bg);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid var(--border-color)
+            }
+
+            .logo {
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 10px
+            }
+
+            .main-container {
+                position: relative;
+                z-index: 10;
+                display: flex;
+                gap: 20px;
+                padding: 20px;
+                height: calc(100vh - 80px);
+                overflow: hidden
+            }
+
+            .glass-panel {
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                border: 1px solid var(--border-color);
+                border-radius: 16px;
+                padding: 20px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+                display: flex;
+                flex-direction: column
+            }
+
+            .left-panel {
+                flex: 1;
+                min-width: 350px;
+                overflow: auto
+            }
+
+            .right-panel {
+                width: 420px;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden
+            }
+
+            .project-title-input {
+                width: 100%;
+                background: transparent;
+                border: none;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+                padding: 8px 0;
+                font-size: 1.3rem;
+                color: var(--white);
+                outline: none
+            }
+
+            .input-group {
+                margin-bottom: 12px
+            }
+
+            label {
+                display: block;
+                margin-bottom: 6px;
+                font-size: 0.85rem;
+                opacity: 0.9
+            }
+
+            input,
+            textarea,
+            select {
+                width: 100%;
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid var(--border-color);
+                background: rgba(0, 0, 0, 0.18);
+                color: var(--white);
+                outline: none
+            }
+
+            .add-btn {
+                background: var(--white);
+                color: var(--primary-blue);
+                padding: 10px;
+                border-radius: 999px;
+                border: none;
+                font-weight: 700;
+                cursor: pointer
+            }
+
+            .milestone-list {
+                flex: 1;
+                overflow: auto;
+                padding-right: 6px
+            }
+
+            .milestone-card {
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                margin-bottom: 12px;
+                padding: 12px;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start
+            }
+
+            .m-main {
+                display: flex;
+                gap: 12px;
+                align-items: flex-start;
+                flex: 1
+            }
+
+            .m-info h4 {
+                margin: 0;
+                font-size: 1rem
+            }
+
+            .m-info p {
+                margin: 6px 0 0 0;
+                font-size: 0.9rem;
+                opacity: 0.9
+            }
+
+            .m-meta {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-end
+            }
+
+            .price-badge {
+                background: rgba(76, 209, 55, 0.12);
+                padding: 6px 10px;
+                border-radius: 10px;
+                font-weight: 600
+            }
+
+            .delete-btn {
+                background: transparent;
+                border: none;
+                color: rgba(255, 255, 255, 0.5);
+                cursor: pointer
+            }
+
+            .submit-btn {
+                background: linear-gradient(90deg, #4cd137, #009432);
+                padding: 12px;
+                border-radius: 12px;
+                border: none;
+                color: white;
+                font-weight: 700;
+                cursor: pointer;
+                width: 100%
+            }
+
+            .project-list {
+                overflow: auto;
+                flex: 1;
+                margin-top: 12px;
+                padding-right: 6px
+            }
+
+            .project-item {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid var(--border-color);
+                padding: 10px;
+                border-radius: 10px;
+                margin-bottom: 8px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: default
+            }
+
+            .small {
+                font-size: 0.85rem;
+                opacity: 0.8
+            }
+
+            #toast-container {
+                position: fixed;
+                top: 18px;
+                right: 18px;
+                z-index: 60;
+                display: flex;
+                flex-direction: column;
+                gap: 12px
+            }
+
+            .toast {
+                min-width: 220px;
+                padding: 12px 16px;
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.12);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                border-left: 5px solid;
+                animation: slideIn .35s forwards
+            }
+
+            .toast.success {
+                border-color: var(--accent-green)
+            }
+
+            .toast.error {
+                border-color: var(--accent-red)
+            }
+
+            @keyframes slideIn {
+                from {
+                    transform: translateX(120%)
+                }
+
+                to {
+                    transform: none
+                }
+            }
+
+            @media(max-width:920px) {
+                .main-container {
+                    flex-direction: column;
+                    height: auto;
+                    overflow: auto;
+                    padding-bottom: 40px;
+                    margin-bottom: 30px;
+                }
+
+                .right-panel {
+                    width: 100%
+                }
+            }
+              .navbar a{
+                 color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+            .navbar a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .navbar a:hover {
+                color: var(--text-light);
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+            .navbar{
+             display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 2rem;
+                background: var(--glass-bg);
+                border-radius: 50px;
+                box-shadow: var(--card-shadow);
+                max-width: 1200px;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 1rem auto;
+                margin-top: 0px;
+                backdrop-filter: blur(12px);
+                position: relative;
+                z-index: 10;
+            }
+              .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1.05rem;
+                transition: color 0.3s ease;
+                position: relative;
+                padding-bottom: 5px;
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--white);
+                transition: width 0.3s ease-in-out;
+            }
+
+            .nav-links a:hover {
+                color: var(--text-light);
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .nav-icons a {
+                font-size: 1.3rem;
+                color: var(--white);
+                margin-left: 1rem;
+                transition: color 0.3s ease;
+            }
+
+            .nav-icons a:hover {
+                color: var(--text-light);
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+        <nav class="navbar">
+            <div class="logo-container"><a href="projectselect.html">
+                    <h3>Simplify</h3>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="projectuploadingorg.html">Project Upload</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="report.html">Report</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="profile.html"><i class="fa-solid fa-user-circle"></i></a>
+            </div>
+        </nav>
+        <div id="toast-container"></div>
+        <div class="main-container">
+            <!-- LEFT: Project form & milestones -->
+            <div class="glass-panel left-panel">
+                <div style="margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:12px">
+                    <label style="font-size:0.8rem;opacity:0.7">PROJECT NAME</label>
+                    <input class="project-title-input" id="projectName" placeholder="Enter Project Name..."
+                        value="New Web Development Project">
+                    <div style="display:flex;gap:12px;margin-top:10px">
+                        <div style="flex:1">
+                            <label>Project Deadline</label>
+                            <input type="date" id="projectDeadline">
+                        </div>
+                        <div style="width:140px">
+                            <label style="font-size:0.8rem">Total (local)</label>
+                            <div id="totalDisplay" style="font-size:1.3rem;font-weight:700;color:#7bed9f">₹0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:12px">
+                    <h3 style="margin:0 0 10px 0;display:flex;align-items:center;gap:10px"><i
+                            class="fa-solid fa-plus-circle"></i> Add Milestone</h3>
+
+                    <div class="input-group">
+                        <label>Title</label>
+                        <input type="text" id="mTitle" placeholder="e.g. Frontend Architecture">
+                    </div>
+
+                    <div style="display:flex;gap:12px">
+                        <div style="flex:1" class="input-group">
+                            <label>Cost (₹)</label>
+                            <input type="number" id="mPrice" placeholder="0.00" min="0" step="0.01">
+                        </div>
+                        <div style="width:220px" class="input-group">
+                            <label>Due Date</label>
+                            <input type="date" id="mDate">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Description</label>
+                        <textarea id="mDesc" rows="3" placeholder="Details about this phase..."></textarea>
+                    </div>
+
+                    <button class="add-btn" id="addMilestoneBtn">Add to Roadmap</button>
+
+                    <div style="margin-top:16px; flex:1; display:flex; flex-direction:column; min-height:240px;">
+                        <h3 style="margin:12px 0">Milestones</h3>
+                        <div class="milestone-list" id="milestoneList">
+                            <div style="text-align:center;margin-top:30px;opacity:0.6">
+                                <i class="fa-solid fa-clipboard-list fa-3x"></i>
+                                <p>No milestones added yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:12px">
+                    <button class="submit-btn" id="submitProjectBtn"><i class="fa-solid fa-paper-plane"></i> Finalize &
+                        Submit Project</button>
+                </div>
+            </div>
+
+            <!-- RIGHT: Projects list (Selected Project section removed) -->
+            <div class="glass-panel right-panel">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                    <h3 style="margin:0">Your Uploaded Projects</h3>
+                    <span class="small" id="orgProjectCount">0</span>
+                </div>
+
+                <div class="project-list" id="projectList" style="margin-top:12px">
+                    <div style="text-align:center;opacity:0.6;margin-top:40px"><i
+                            class="fa-solid fa-cloud-arrow-up fa-3x"></i>
+                        <p>No projects yet</p>
+                    </div>
+                </div>
+
+                <!-- Removed the "Selected Project" UI block as requested -->
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script>
+            particlesJS("particles-js", {
+                particles: { number: { value: 50 }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.35, random: true }, size: { value: 3 }, line_linked: { enable: true, distance: 140, color: "#ffffff", opacity: 0.08 }, move: { enable: true, speed: 1.2 } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" } } }, retina_detect: true
+            });
+            const LOGIN_ID = localStorage.getItem("login_id");
+
+                if (!LOGIN_ID) {
+                    alert("Login expired. Please login again.");
+                    window.location.href = "/student/login.html";
+                }
+
+            // --- State ---
+            let totalValue = 0;
+            let milestoneCount = 0;
+            const milestones = []; // {id, title, price, due_date, description}
+
+            // DOM refs
+            const milestoneList = document.getElementById("milestoneList");
+            const totalDisplay = document.getElementById("totalDisplay");
+            const itemCountLabel = document.getElementById("orgProjectCount");
+            const projectListDiv = document.getElementById("projectList");
+
+            // Toast
+            function showToast(msg, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const t = document.createElement('div');
+                t.className = `toast ${type}`;
+                t.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i><div>${msg}</div>`;
+                container.appendChild(t);
+                setTimeout(() => t.remove(), 3800);
+            }
+
+            // Helpers
+            function formatINR(n) {
+                return '₹' + Number(n || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            function updateTotalsUI() {
+                totalDisplay.textContent = formatINR(totalValue);
+            }
+
+            function renderMilestones() {
+                milestoneList.innerHTML = '';
+                if (milestones.length === 0) {
+                    milestoneList.innerHTML = `<div style="text-align:center;margin-top:30px;opacity:0.6"><i class="fa-solid fa-clipboard-list fa-3x"></i><p>No milestones added yet.</p></div>`;
+                    return;
+                }
+                milestones.forEach(m => {
+                    const card = document.createElement('div');
+                    card.className = 'milestone-card';
+                    card.id = `ms-${m.id}`;
+                    card.innerHTML = `
+          <div class="m-main">
+            <div class="m-info">
+              <h4>${escapeHtml(m.title)}</h4>
+              <p>${escapeHtml(m.description || 'No details provided')}</p>
+            </div>
+          </div>
+          <div class="m-meta">
+            <div class="small date-badge"><i class="fa-regular fa-clock"></i> ${m.due_date || 'No date'}</div>
+            <div class="price-badge">${formatINR(m.price)}</div>
+            <button class="delete-btn" title="Delete" data-id="${m.id}"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+                    milestoneList.appendChild(card);
+                });
+                // attach delete handlers
+                milestoneList.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = parseInt(btn.getAttribute('data-id'));
+                        deleteMilestone(id);
+                    });
+                });
+            }
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str).replace(/[&<>"']/g, s => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[s]));
+            }
+
+            // Add Milestone
+            document.getElementById('addMilestoneBtn').addEventListener('click', () => {
+                const title = document.getElementById('mTitle').value.trim();
+                const priceRaw = document.getElementById('mPrice').value;
+                const price = parseFloat(priceRaw);
+                const due = document.getElementById('mDate').value;
+                const desc = document.getElementById('mDesc').value.trim();
+
+                if (!title || isNaN(price) || price < 0) {
+                    showToast('Please provide valid Title and Price', 'error');
+                    return;
+                }
+
+                const id = Date.now() + Math.floor(Math.random() * 999);
+                milestones.push({ id, title, price, due_date: due || null, description: desc });
+                totalValue += price;
+                milestoneCount = milestones.length;
+                updateTotalsUI();
+                renderMilestones();
+
+                // clear inputs
+                document.getElementById('mTitle').value = '';
+                document.getElementById('mPrice').value = '';
+                document.getElementById('mDate').value = '';
+                document.getElementById('mDesc').value = '';
+
+                showToast('Milestone added', 'success');
+            });
+
+            function deleteMilestone(id) {
+                const idx = milestones.findIndex(m => m.id === id);
+                if (idx === -1) return;
+                if (!confirm('Delete this milestone?')) return;
+                totalValue -= milestones[idx].price;
+                if (totalValue < 0) totalValue = 0;
+                milestones.splice(idx, 1);
+                milestoneCount = milestones.length;
+                updateTotalsUI();
+                renderMilestones();
+                showToast('Milestone deleted', 'error');
+            }
+
+            // Submit project -> sends project_name, deadline, milestones[]
+            document.getElementById('submitProjectBtn').addEventListener('click', async () => {
+                const projectName = document.getElementById('projectName').value.trim();
+                const deadline = document.getElementById('projectDeadline').value;
+
+                if (!projectName) {
+                    showToast('Please enter project name', 'error'); return;
+                }
+                if (milestones.length === 0) {
+                    showToast('Add at least one milestone', 'error'); return;
+                }
+
+                // Prepare payload (server computes final total)
+                const payload = {
+                    project_name: projectName,
+                    deadline: deadline || null,
+                    milestones: milestones.map(m => ({
+                        title: m.title,
+                        description: m.description,
+                        price: m.price,
+                        due_date: m.due_date
+                    }))
+                };
+
+                try {
+                const resp = await fetch('/org/projects/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            login_id: LOGIN_ID, // ✅ ADD
+                            ...payload
+                        })
+                    });
+                    const data = await resp.json();
+                    if (!data || !data.success) {
+                        console.error('Server error', data);
+                        showToast(data && data.error ? data.error : 'Upload failed', 'error');
+                        return;
+                    }
+
+                    showToast('Project uploaded successfully', 'success');
+
+                    // reset local state
+                    milestones.length = 0;
+                    totalValue = 0;
+                    milestoneCount = 0;
+                    updateTotalsUI();
+                    renderMilestones();
+                    document.getElementById('projectName').value = projectName; // keep name if desired
+                    document.getElementById('projectDeadline').value = '';
+
+                    // refresh org projects list
+                    await loadOrgProjects();
+                } catch (ex) {
+                    console.error(ex);
+                    showToast('Network error while uploading', 'error');
+                }
+            });
+
+            // --- Projects list / view (click now does not attempt to show details) ---
+            async function loadOrgProjects() {
+                try {
+                 const res = await fetch('/org/projects?limit=200', {
+                        headers: {
+                            'x-login-id': LOGIN_ID// ✅ ADD
+                        }
+                    });
+
+                    const data = await res.json();
+                    if (!data || !data.success) { projectListDiv.innerHTML = '<div style="opacity:0.6">Error loading projects</div>'; return; }
+                    const projects = data.projects || [];
+                    itemCountLabel.textContent = projects.length + ' projects';
+
+                    if (projects.length === 0) {
+                        projectListDiv.innerHTML = `<div style="text-align:center;opacity:0.6;margin-top:40px"><i class="fa-solid fa-cloud-arrow-up fa-3x"></i><p>No projects yet</p></div>`;
+                        return;
+                    }
+
+                    projectListDiv.innerHTML = '';
+                    projects.forEach(p => {
+                        const node = document.createElement('div');
+                        node.className = 'project-item';
+                        node.innerHTML = `
+            <div>
+              <div style="font-weight:600">${escapeHtml(p.project_name)}</div>
+              <div class="small">${p.deadline ? 'Deadline: ' + p.deadline : 'No deadline'} • ${p.created_at ? (new Date(p.created_at)).toLocaleString() : ''}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:700">${formatINR(p.total_value)}</div>
+              <div class="small">#${p.id}</div>
+            </div>
+          `;
+                        // clicking no longer opens the removed "Selected Project" panel
+                        projectListDiv.appendChild(node);
+                    });
+                } catch (err) {
+                    console.error(err);
+                    projectListDiv.innerHTML = `<div style="opacity:0.6">Error loading projects</div>`;
+                }
+            }
+
+            // initial
+            updateTotalsUI();
+            renderMilestones();
+            loadOrgProjects();
+        </script>
+    </body>
+
+</html>
