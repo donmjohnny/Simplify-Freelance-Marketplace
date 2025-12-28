@@ -615,7 +615,7 @@
 
         /* ================== OPEN MILESTONES ================== */
         function openMilestones(projectId) {
-            fetch(`/student/projects/${projectId}/milestones`)
+            fetch(`/student/project/${projectId}/milestones`)
                 .then(res => res.json())
                 .then(data => {
                     if (!data.success) return;
@@ -680,5 +680,6 @@
     </script>
 
     </body>
+
 
 </html>
