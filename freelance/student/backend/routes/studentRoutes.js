@@ -525,9 +525,9 @@ router.post("/report", async (req, res) => {
 
 /* ======================================================
    GET PROJECT MILESTONES (STUDENT – BEFORE APPLY)
-   GET /student/projects/:projectId/milestones
+   GET /student/project/:projectId/milestones
 ====================================================== */
-router.get("/projects/:projectId/milestones", (req, res) => {
+router.get("/project/:projectId/milestones", (req, res) => {
   const projectId = Number(req.params.projectId);
   if (!projectId) {
     return res.json({ success: false, milestones: [] });
@@ -555,7 +555,9 @@ router.get("/projects/:projectId/milestones", (req, res) => {
   );
 });
 
+
 module.exports = router;
+
 
 
 
