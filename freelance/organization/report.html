@@ -436,7 +436,7 @@
                 statusMsg.textContent = "Sending your report...";
 
                 try {
-                    const res = await fetch("http://localhost:3000/organization/report", {
+                    const res = await fetch("/organization/report", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -462,5 +462,6 @@
             });
         </script>
     </body>
+
 
 </html>
