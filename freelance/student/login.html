@@ -668,12 +668,12 @@
                     password: formData.get("password"),
                 };
 
-                try {
-                    const res = await fetch("http://localhost:3000/auth/register", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(data),
-                    });
+              try {
+    const res = await fetch("/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    })
 
                     const json = await res.json();
 
@@ -711,12 +711,12 @@
             password: formData.get("password"),
         };
 
-        try {
-            const res = await fetch("http://localhost:3000/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-            });
+       try {
+    const res = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
 
             const json = await res.json();
 
@@ -753,5 +753,6 @@
             particlesJS("particles-js", { particles: { number: { value: 60, }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.2 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" } } }, retina_detect: true });
         </script>
     </body>
+
 
 </html>
