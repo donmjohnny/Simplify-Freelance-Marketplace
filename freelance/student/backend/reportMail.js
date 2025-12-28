@@ -3,12 +3,15 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // TLS
   auth: {
-    user: process.env.ADMIN_EMAIL,      // e.g. simplifyorg12@gmail.com
-    pass: process.env.ADMIN_EMAIL_PASS // Gmail app password
+    user: process.env.ADMIN_EMAIL,
+    pass: process.env.ADMIN_EMAIL_PASS,
   },
 });
+
 
 async function sendStudentReport({ name, email, category, description }) {
   try {
@@ -47,4 +50,5 @@ ${description}
 }
 
 module.exports = { sendStudentReport };
+
 
