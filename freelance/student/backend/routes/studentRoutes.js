@@ -514,7 +514,11 @@ router.post("/report", async (req, res) => {
 
     await sendStudentReport({ name, email, category, description });
 
-    return res.json({ message: "Report sent to admin successfully." });
+  return res.status(200).json({
+  success: true,
+  message: "✅ Report sent to admin successfully."
+});
+
   } catch (err) {
     console.error("Error sending report email:", err.message);
     return res
@@ -557,6 +561,7 @@ router.get("/project/:projectId/milestones", (req, res) => {
 
 
 module.exports = router;
+
 
 
 
