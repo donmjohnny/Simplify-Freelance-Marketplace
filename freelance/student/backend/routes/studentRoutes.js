@@ -504,28 +504,25 @@ router.get("/trial-projects", (req, res) => {
 
 const { sendStudentReport } = require("../reportMail");
 
-router.post("/report", async (req, res) => {
-  try {
-    const { name, email, category, description } = req.body;
+router.post("/report", (req, res) => {
+  const { name, email, category, description } = req.body;
 
-    if (!name || !email || !category || !description) {
-      return res.status(400).json({ error: "All fields are required." });
-    }
-
-    await sendStudentReport({ name, email, category, description });
-
-  return res.status(200).json({
-  success: true,
-  message: "✅ Report sent to admin successfully."
-});
-
-  } catch (err) {
-    console.error("Error sending report email:", err.message);
-    return res
-      .status(500)
-      .json({ error: "Failed to send report. Please try again later." });
+  if (!name || !email || !category || !description) {
+    return res.status(400).json({ error: "All fields are required." });
   }
+
+  // ✅ Respond to frontend immediately
+  res.status(200).json({
+    success: true,
+    message: "✅ Report submitted successfully."
+  });
+
+  // 🔥 Send mail in background (NON-BLOCKING)
+  sendStudentReport({ name, email, category, description })
+    .then(() => console.log("📨 Report mail sent"))
+    .catch(err => console.error("❌ Mail failed:", err.message));
 });
+
 
 /* ======================================================
    GET PROJECT MILESTONES (STUDENT – BEFORE APPLY)
@@ -561,6 +558,7 @@ router.get("/project/:projectId/milestones", (req, res) => {
 
 
 module.exports = router;
+
 
 
 
