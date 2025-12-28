@@ -11,14 +11,14 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendStudentReport({ name, email, category, description }) {
-  const mailOptions = {
-    from: `"${name}" <${email}>`,
-    to: process.env.ADMIN_EMAIL,
-    subject: `New Report from ${name}: ${category}`,
-    text: `
+  try {
+    const mailOptions = {
+      from: `"Simplify Reports" <${process.env.ADMIN_EMAIL}>`, // ✅ FIXED
+      to: process.env.ADMIN_EMAIL,
+      replyTo: email, // ✅ user email goes here
+      subject: `New Report from ${name}: ${category}`,
+      text: `
 A new problem has been reported on Simplify.
-
---- Details ---
 
 Name: ${name}
 Email: ${email}
@@ -26,20 +26,25 @@ Category: ${category}
 
 Description:
 ${description}
+      `,
+      html: `
+        <h2>New Problem Reported on Simplify</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Category:</strong> ${category}</p>
+        <p><strong>Description:</strong></p>
+        <p>${description.replace(/\n/g, "<br>")}</p>
+      `,
+    };
 
------------------
-    `,
-    html: `
-      <h2>New Problem Reported on Simplify</h2>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Category:</strong> ${category}</p>
-      <p><strong>Description:</strong></p>
-      <p>${description.replace(/\n/g, "<br>")}</p>
-    `,
-  };
+    await transporter.sendMail(mailOptions);
 
-  return transporter.sendMail(mailOptions);
+    return true; // ✅ VERY IMPORTANT
+  } catch (err) {
+    console.error("❌ Mail send failed:", err.message);
+    throw err; // force route to respond with error
+  }
 }
 
 module.exports = { sendStudentReport };
+
