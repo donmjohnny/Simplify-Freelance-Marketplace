@@ -523,5 +523,38 @@ router.post("/report", async (req, res) => {
   }
 });
 
+/* ======================================================
+   GET PROJECT MILESTONES (STUDENT – BEFORE APPLY)
+   GET /student/projects/:projectId/milestones
+====================================================== */
+router.get("/projects/:projectId/milestones", (req, res) => {
+  const projectId = Number(req.params.projectId);
+  if (!projectId) {
+    return res.json({ success: false, milestones: [] });
+  }
+
+  db.all(
+    `
+    SELECT 
+      id AS milestone_id,
+      title,
+      price
+    FROM org_project_milestones
+    WHERE project_id = ?
+    ORDER BY id ASC
+    `,
+    [projectId],
+    (err, rows) => {
+      if (err) {
+        console.error("Project milestone fetch error:", err);
+        return res.json({ success: false, milestones: [] });
+      }
+
+      res.json({ success: true, milestones: rows });
+    }
+  );
+});
+
 
 module.exports = router;
+
